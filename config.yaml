@@ -1,0 +1,63 @@
+baseURL: 'https://scout-events.netlify.app'
+languageCode: 'en-us'
+title: 'Scout Events'
+description: 'Stay updated with all scout group events and activities'
+
+# Site parameters
+params:
+  description: 'A community website for scout events and activities'
+  author: 'Scout Group'
+  contact_email: 'contact@scoutgroup.org'
+  phone: '+1 (555) 123-4567'
+  address: '123 Scout Street, Community City, ST 12345'
+  
+  # Group information
+  group_name: 'Local Scout Group'
+  meeting_times: 'Fridays 7:00 PM - 9:00 PM'
+  age_ranges: 'Ages 6-18 welcome'
+
+# Menu configuration
+menu:
+  main:
+    - name: 'Home'
+      url: '/'
+      weight: 10
+    - name: 'Events'
+      url: '/events/'
+      weight: 20
+    - name: 'About'
+      url: '/about/'
+      weight: 30
+    - name: 'Contact'
+      url: '/contact/'
+      weight: 40
+
+# Taxonomies for event categorization
+taxonomies:
+  event_type: 'event_types'
+  age_group: 'age_groups'
+  tag: 'tags'
+
+# Build settings
+build:
+  publishDir: 'public'
+
+# Markup settings
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+  highlight:
+    style: 'github'
+    lineNos: true
+
+# Output formats
+outputs:
+  home: ['HTML', 'RSS', 'JSON']
+  page: ['HTML']
+  section: ['HTML', 'RSS']
+
+# Permalinks
+permalinks:
+  events: '/events/:year/:month/:slug/'
+  pages: '/:slug/'
