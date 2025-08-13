@@ -62,13 +62,13 @@
         {{ $endDate := .Params.end_date }}
         {{ $startTime := .Params.start_time }}
         {{ $endTime := .Params.end_time }}
-        {{ $eventTypes := .Params.event_types }}
+        {{ $eventType := .Params.event_type }}
         {{ $ageGroups := .Params.age_groups }}
         
         <article class="event-card" 
                  data-start-date="{{ $startDate }}"
-                 data-event-types="{{ delimit $eventTypes "," }}"
-                 data-age-groups="{{ delimit $ageGroups "," }}"
+                 data-event-types="{{ if $eventType }}{{ $eventType }}{{ end }}"
+                 data-age-groups="{{ if $ageGroups }}{{ delimit $ageGroups "," }}{{ end }}"
                  data-search-text="{{ .Title | lower }} {{ .Params.description | lower }}">
             
             <div class="event-header">
@@ -119,11 +119,9 @@
 
                 <!-- Event Type and Age Group Badges -->
                 <div class="event-taxonomies">
-                    {{ if $eventTypes }}
+                    {{ if $eventType }}
                     <div class="event-types">
-                        {{ range $eventTypes }}
-                        <span class="event-type-badge">{{ . | title }}</span>
-                        {{ end }}
+                        <span class="event-type-badge">{{ $eventType | title }}</span>
                     </div>
                     {{ end }}
 

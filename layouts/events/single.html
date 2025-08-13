@@ -52,12 +52,10 @@
 
         <!-- Event Type and Age Group Badges -->
         <div class="event-meta-badges">
-            {{ if .Params.event_types }}
+            {{ if .Params.event_type }}
             <div class="event-types-detail">
                 <span class="meta-label">Event Type:</span>
-                {{ range .Params.event_types }}
-                <span class="event-type-badge-detail">{{ . | title }}</span>
-                {{ end }}
+                <span class="event-type-badge-detail">{{ .Params.event_type | title }}</span>
             </div>
             {{ end }}
 
@@ -174,9 +172,9 @@
 <!-- Related Events -->
 {{ $related := where .Site.RegularPages "Section" "events" }}
 {{ $related := where $related ".Permalink" "!=" .Permalink }}
-{{ if .Params.event_types }}
-    {{ $currentTypes := .Params.event_types }}
-    {{ $related = where $related ".Params.event_types" "intersect" $currentTypes }}
+{{ if .Params.event_type }}
+    {{ $currentType := .Params.event_type }}
+    {{ $related = where $related ".Params.event_type" $currentType }}
 {{ end }}
 {{ $related = $related.ByParam "start_date" | first 3 }}
 
