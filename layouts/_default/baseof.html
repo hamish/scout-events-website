@@ -3,28 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ if .Title }}{{ .Title }} - {{ end }}{{ .Site.Data.site.title | default .Site.Title }}</title>
-    <meta name="description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Data.site.description | default .Site.Params.description }}{{ end }}">
+    <title>{{ if .Title }}{{ .Title }}{{ if ne .Title .Site.Title }} - {{ .Site.Data.site.title | default .Site.Title }}{{ end }}{{ else }}{{ .Site.Data.site.title | default .Site.Title }}{{ end }}</title>
     
     <!-- Favicon -->
     {{ if .Site.Params.favicon }}
     <link rel="icon" type="image/x-icon" href="{{ .Site.Params.favicon }}">
     {{ end }}
     
+    <!-- Preload critical resources -->
+    <link rel="preload" href="{{ "/css/main.css" | relURL }}" as="style">
+    
     <!-- Main Stylesheet -->
     <link rel="stylesheet" href="{{ "/css/main.css" | relURL }}">
     
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="{{ .Permalink }}">
-    <meta property="og:title" content="{{ if .Title }}{{ .Title }} - {{ end }}{{ .Site.Data.site.title | default .Site.Title }}">
-    <meta property="og:description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Data.site.description | default .Site.Params.description }}{{ end }}">
-    
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="{{ .Permalink }}">
-    <meta property="twitter:title" content="{{ if .Title }}{{ .Title }} - {{ end }}{{ .Site.Data.site.title | default .Site.Title }}">
-    <meta property="twitter:description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Data.site.description | default .Site.Params.description }}{{ end }}">
+    <!-- SEO and Social Media Meta Tags -->
+    {{ partial "seo.html" . }}
 </head>
 <body>
     <a href="#main-content" class="skip-to-content">Skip to main content</a>

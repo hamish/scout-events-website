@@ -1,0 +1,53 @@
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "{{ if .Title }}{{ .Title }}{{ if ne .Title .Site.Title }} - {{ .Site.Data.site.title | default .Site.Title }}{{ end }}{{ else }}{{ .Site.Data.site.title | default .Site.Title }}{{ end }}",
+    "description": "{{ if .Description }}{{ .Description }}{{ else if .Params.description }}{{ .Params.description }}{{ else }}{{ .Site.Data.site.description | default .Site.Params.description }}{{ end }}",
+    "url": "{{ .Permalink }}",
+    "inLanguage": "{{ .Site.LanguageCode | default "en" }}",
+    "isPartOf": {
+        "@type": "WebSite",
+        "name": "{{ .Site.Data.site.title | default .Site.Title }}",
+        "url": "{{ .Site.BaseURL }}",
+        "description": "{{ .Site.Data.site.description | default .Site.Params.description }}",
+        "publisher": {
+            "@type": "Organization",
+            "name": "{{ .Site.Data.site.group_info.group_name | default .Site.Data.site.title | default .Site.Title }}",
+            "url": "{{ .Site.BaseURL }}"
+        }
+    },
+    "mainEntity": {
+        "@type": "Organization",
+        "name": "{{ .Site.Data.site.group_info.group_name | default .Site.Data.site.title | default .Site.Title }}",
+        "url": "{{ .Site.BaseURL }}"
+    },
+    "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "{{ .Site.BaseURL }}"
+            }
+            {{ if not .IsHome }}
+            ,{
+                "@type": "ListItem",
+                "position": 2,
+                "name": "{{ .Section | title }}",
+                "item": "{{ .Site.BaseURL }}/{{ .Section }}/"
+            }
+            {{ if not .IsSection }}
+            ,{
+                "@type": "ListItem",
+                "position": 3,
+                "name": "{{ .Title }}",
+                "item": "{{ .Permalink }}"
+            }
+            {{ end }}
+            {{ end }}
+        ]
+    }
+}
+</script>

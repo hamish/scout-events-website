@@ -1,0 +1,56 @@
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "{{ .Site.Data.site.group_info.group_name | default .Site.Data.site.title | default .Site.Title }}",
+    "url": "{{ .Site.BaseURL }}",
+    "logo": "{{ .Site.Params.logo | default "/images/logo.png" | absURL }}",
+    "description": "{{ .Site.Data.site.description | default .Site.Params.description }}",
+    {{ if .Site.Data.site.contact_email }}
+    "email": "{{ .Site.Data.site.contact_email }}",
+    {{ end }}
+    {{ if .Site.Data.site.phone }}
+    "telephone": "{{ .Site.Data.site.phone }}",
+    {{ end }}
+    "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "{{ .Site.Data.site.address | default .Site.Params.address }}"
+    },
+    "sameAs": [
+        {{ $social := slice }}
+        {{ if .Site.Data.site.social_media.facebook }}
+        {{ $social = $social | append (printf "https://facebook.com/%s" .Site.Data.site.social_media.facebook) }}
+        {{ end }}
+        {{ if .Site.Data.site.social_media.instagram }}
+        {{ $social = $social | append (printf "https://instagram.com/%s" .Site.Data.site.social_media.instagram) }}
+        {{ end }}
+        {{ if .Site.Data.site.social_media.twitter }}
+        {{ $social = $social | append (printf "https://twitter.com/%s" .Site.Data.site.social_media.twitter) }}
+        {{ end }}
+        {{ if $social }}
+        {{ range $index, $url := $social }}
+        {{ if $index }},{{ end }}
+        "{{ $url }}"
+        {{ end }}
+        {{ else }}
+        "{{ .Site.BaseURL }}"
+        {{ end }}
+    ],
+    "foundingDate": "{{ .Site.Params.founding_date | default "2020" }}",
+    "memberOf": {
+        "@type": "Organization",
+        "name": "Scouting Organization"
+    },
+    "areaServed": {
+        "@type": "Place",
+        "name": "Local Community"
+    },
+    "knowsAbout": [
+        "Youth Development",
+        "Outdoor Activities",
+        "Community Service",
+        "Leadership Training",
+        "Character Building"
+    ]
+}
+</script>

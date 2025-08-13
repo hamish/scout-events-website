@@ -1,0 +1,73 @@
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Event",
+    "name": "{{ .Title }}",
+    "description": "{{ if .Params.description }}{{ .Params.description | plainify }}{{ else }}{{ .Summary | plainify }}{{ end }}",
+    "url": "{{ .Permalink }}",
+    {{ if .Params.start_date }}
+    "startDate": "{{ .Params.start_date }}{{ if .Params.start_time }}T{{ .Params.start_time }}:00{{ end }}",
+    {{ if and .Params.end_date (ne .Params.end_date .Params.start_date) }}
+    "endDate": "{{ .Params.end_date }}{{ if .Params.end_time }}T{{ .Params.end_time }}:00{{ end }}",
+    {{ else if .Params.end_time }}
+    "endDate": "{{ .Params.start_date }}T{{ .Params.end_time }}:00",
+    {{ end }}
+    {{ end }}
+    {{ if .Params.location }}
+    "location": {
+        "@type": "Place",
+        "name": "{{ .Params.location }}",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "{{ .Site.Data.site.address | default .Site.Params.address }}"
+        }
+    },
+    {{ end }}
+    "organizer": {
+        "@type": "Organization",
+        "name": "{{ .Site.Data.site.group_info.group_name | default .Site.Data.site.title | default .Site.Title }}",
+        "url": "{{ .Site.BaseURL }}",
+        {{ if .Site.Data.site.contact_email }}
+        "email": "{{ .Site.Data.site.contact_email }}",
+        {{ end }}
+        {{ if .Site.Data.site.phone }}
+        "telephone": "{{ .Site.Data.site.phone }}",
+        {{ end }}
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "{{ .Site.Data.site.address | default .Site.Params.address }}"
+        }
+    },
+    {{ if .Params.featured_image }}
+    "image": [
+        "{{ .Params.featured_image | absURL }}"
+    ],
+    {{ end }}
+    "eventStatus": "https://schema.org/EventScheduled",
+    "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+    {{ if .Params.event_type }}
+    "category": "{{ .Params.event_type | title }}",
+    {{ end }}
+    {{ if .Params.age_groups }}
+    "audience": {
+        "@type": "Audience",
+        "audienceType": "{{ delimit .Params.age_groups ", " }}"
+    },
+    {{ end }}
+    {{ if .Params.registration_required }}
+    "offers": {
+        "@type": "Offer",
+        "availability": "https://schema.org/InStock",
+        "price": "0",
+        "priceCurrency": "USD",
+        {{ if .Params.registration_link }}
+        "url": "{{ .Params.registration_link }}"
+        {{ else }}
+        "url": "{{ .Site.BaseURL }}/contact/"
+        {{ end }}
+    },
+    {{ end }}
+    "isAccessibleForFree": true,
+    "inLanguage": "{{ .Site.LanguageCode | default "en" }}"
+}
+</script>

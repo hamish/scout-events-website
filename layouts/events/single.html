@@ -106,40 +106,7 @@
         {{ end }}
     </div>
 
-    <!-- Structured Data for SEO -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Event",
-        "name": "{{ .Title }}",
-        "description": "{{ if .Params.description }}{{ .Params.description }}{{ else }}{{ .Summary }}{{ end }}",
-        {{ if $startDate }}
-        "startDate": "{{ $startDate }}{{ if $startTime }}T{{ $startTime }}:00{{ end }}",
-        {{ if and $endDate (ne $endDate $startDate) }}
-        "endDate": "{{ $endDate }}{{ if $endTime }}T{{ $endTime }}:00{{ end }}",
-        {{ else if $endTime }}
-        "endDate": "{{ $startDate }}T{{ $endTime }}:00",
-        {{ end }}
-        {{ end }}
-        {{ if .Params.location }}
-        "location": {
-            "@type": "Place",
-            "name": "{{ .Params.location }}"
-        },
-        {{ end }}
-        "organizer": {
-            "@type": "Organization",
-            "name": "{{ .Site.Title }}",
-            "url": "{{ .Site.BaseURL }}"
-        },
-        "url": "{{ .Permalink }}",
-        {{ if .Params.featured_image }}
-        "image": "{{ .Params.featured_image | absURL }}",
-        {{ end }}
-        "eventStatus": "https://schema.org/EventScheduled",
-        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode"
-    }
-    </script>
+
 </article>
 
 <!-- Navigation -->

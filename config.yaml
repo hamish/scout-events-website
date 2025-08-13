@@ -98,9 +98,22 @@ markup:
 
 # Output formats
 outputs:
-  home: ['HTML', 'RSS', 'JSON']
+  home: ['HTML', 'RSS', 'JSON', 'ROBOTS']
   page: ['HTML']
   section: ['HTML', 'RSS']
+
+# Media types for custom outputs
+mediaTypes:
+  text/plain:
+    suffixes: ['txt']
+
+# Output format definitions
+outputFormats:
+  ROBOTS:
+    mediaType: 'text/plain'
+    baseName: 'robots'
+    isPlainText: true
+    notAlternative: true
 
 # Permalinks
 permalinks:

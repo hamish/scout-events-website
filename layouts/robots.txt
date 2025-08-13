@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: {{ .Site.BaseURL }}/sitemap.xml
+
+# Disallow admin areas
+Disallow: /admin/
+Disallow: /.netlify/
+Disallow: /netlify.toml
+
+# Allow all scout-related content
+Allow: /events/
+Allow: /pages/
+Allow: /contact/
+Allow: /images/
+Allow: /css/
+
+# Crawl delay (optional, helps with server load)
+Crawl-delay: 1
