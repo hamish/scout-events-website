@@ -27,14 +27,92 @@
     <meta property="twitter:description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
 </head>
 <body>
+    <a href="#main-content" class="skip-to-content">Skip to main content</a>
+    
     {{ partial "header.html" . }}
     
-    <main class="main-content">
+    <main class="main-content" id="main-content">
         <div class="container">
             {{ block "main" . }}{{ end }}
         </div>
     </main>
     
     {{ partial "footer.html" . }}
+    
+    <!-- Mobile Menu JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            
+            if (mobileMenuToggle && mobileMenu) {
+                // Handle both click and touch events
+                function toggleMenu() {
+                    const isExpanded = mobileMenuToggle.getAttribute('aria-expanded') === 'true';
+                    
+                    mobileMenuToggle.setAttribute('aria-expanded', !isExpanded);
+                    mobileMenu.classList.toggle('active');
+                    
+                    // Update hamburger icon
+                    const hamburger = mobileMenuToggle.querySelector('.hamburger');
+                    if (hamburger) {
+                        hamburger.textContent = mobileMenu.classList.contains('active') ? '✕' : '☰';
+                    }
+                    
+                    // Prevent body scroll when menu is open
+                    if (mobileMenu.classList.contains('active')) {
+                        document.body.style.overflow = 'hidden';
+                    } else {
+                        document.body.style.overflow = '';
+                    }
+                }
+                
+                function closeMenu() {
+                    mobileMenu.classList.remove('active');
+                    mobileMenuToggle.setAttribute('aria-expanded', 'false');
+                    const hamburger = mobileMenuToggle.querySelector('.hamburger');
+                    if (hamburger) {
+                        hamburger.textContent = '☰';
+                    }
+                    document.body.style.overflow = '';
+                }
+                
+                mobileMenuToggle.addEventListener('click', toggleMenu);
+                mobileMenuToggle.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    toggleMenu();
+                });
+                
+                // Close mobile menu when clicking on a link
+                const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+                mobileMenuLinks.forEach(link => {
+                    link.addEventListener('click', closeMenu);
+                    link.addEventListener('touchstart', closeMenu);
+                });
+                
+                // Close mobile menu when clicking outside
+                document.addEventListener('click', function(event) {
+                    if (!mobileMenuToggle.contains(event.target) && !mobileMenu.contains(event.target)) {
+                        closeMenu();
+                    }
+                });
+                
+                // Close menu on escape key
+                document.addEventListener('keydown', function(event) {
+                    if (event.key === 'Escape' && mobileMenu.classList.contains('active')) {
+                        closeMenu();
+                        mobileMenuToggle.focus();
+                    }
+                });
+                
+                // Handle window resize
+                window.addEventListener('resize', function() {
+                    if (window.innerWidth >= 768 && mobileMenu.classList.contains('active')) {
+                        closeMenu();
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>

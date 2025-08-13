@@ -56,7 +56,7 @@
 
     <!-- Events List -->
     {{ if .Pages }}
-    <div class="events-list" id="events-container">
+    <div class="events-list grid grid-auto" id="events-container">
         {{ range .Pages.ByParam "start_date" }}
         {{ $startDate := .Params.start_date }}
         {{ $endDate := .Params.end_date }}
@@ -180,79 +180,125 @@ document.addEventListener('DOMContentLoaded', function() {
     const showAllEventsBtn = document.getElementById('show-all-events');
     
     const eventCards = document.querySelectorAll('.event-card');
+    let filterTimeout;
+    
+    function showLoading() {
+        eventsContainer.classList.add('loading');
+    }
+    
+    function hideLoading() {
+        eventsContainer.classList.remove('loading');
+    }
     
     function filterEvents() {
-        const dateValue = dateFilter.value;
-        const typeValue = typeFilter.value.toLowerCase();
-        const ageValue = ageFilter.value.toLowerCase();
-        const searchValue = searchFilter.value.toLowerCase().trim();
+        showLoading();
         
-        const today = new Date();
-        const currentMonth = today.getMonth();
-        const currentYear = today.getFullYear();
-        const nextMonth = currentMonth === 11 ? 0 : currentMonth + 1;
-        const nextMonthYear = currentMonth === 11 ? currentYear + 1 : currentYear;
-        
-        let visibleCount = 0;
-        
-        eventCards.forEach(card => {
-            let showCard = true;
+        // Debounce filtering for better performance on mobile
+        clearTimeout(filterTimeout);
+        filterTimeout = setTimeout(() => {
+            const dateValue = dateFilter.value;
+            const typeValue = typeFilter.value.toLowerCase();
+            const ageValue = ageFilter.value.toLowerCase();
+            const searchValue = searchFilter.value.toLowerCase().trim();
             
-            // Date filtering
-            if (dateValue !== 'all') {
-                const startDateStr = card.dataset.startDate;
-                if (startDateStr) {
-                    const eventDate = new Date(startDateStr);
-                    
-                    switch(dateValue) {
-                        case 'upcoming':
-                            showCard = eventDate >= today;
-                            break;
-                        case 'this-month':
-                            showCard = eventDate.getMonth() === currentMonth && eventDate.getFullYear() === currentYear;
-                            break;
-                        case 'next-month':
-                            showCard = eventDate.getMonth() === nextMonth && eventDate.getFullYear() === nextMonthYear;
-                            break;
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // Reset time for accurate date comparison
+            const currentMonth = today.getMonth();
+            const currentYear = today.getFullYear();
+            const nextMonth = currentMonth === 11 ? 0 : currentMonth + 1;
+            const nextMonthYear = currentMonth === 11 ? currentYear + 1 : currentYear;
+            
+            let visibleCount = 0;
+            
+            eventCards.forEach(card => {
+                let showCard = true;
+                
+                // Date filtering
+                if (dateValue !== 'all') {
+                    const startDateStr = card.dataset.startDate;
+                    if (startDateStr) {
+                        const eventDate = new Date(startDateStr);
+                        eventDate.setHours(0, 0, 0, 0);
+                        
+                        switch(dateValue) {
+                            case 'upcoming':
+                                showCard = eventDate >= today;
+                                break;
+                            case 'this-month':
+                                showCard = eventDate.getMonth() === currentMonth && eventDate.getFullYear() === currentYear;
+                                break;
+                            case 'next-month':
+                                showCard = eventDate.getMonth() === nextMonth && eventDate.getFullYear() === nextMonthYear;
+                                break;
+                        }
                     }
                 }
-            }
+                
+                // Event type filtering
+                if (showCard && typeValue !== 'all') {
+                    const eventTypes = card.dataset.eventTypes.toLowerCase();
+                    showCard = eventTypes.includes(typeValue);
+                }
+                
+                // Age group filtering
+                if (showCard && ageValue !== 'all') {
+                    const ageGroups = card.dataset.ageGroups.toLowerCase();
+                    showCard = ageGroups.includes(ageValue);
+                }
+                
+                // Search filtering
+                if (showCard && searchValue) {
+                    const searchText = card.dataset.searchText;
+                    showCard = searchText.includes(searchValue);
+                }
+                
+                // Show/hide card with animation
+                if (showCard) {
+                    card.style.display = 'block';
+                    card.style.opacity = '1';
+                    visibleCount++;
+                } else {
+                    card.style.opacity = '0';
+                    setTimeout(() => {
+                        if (card.style.opacity === '0') {
+                            card.style.display = 'none';
+                        }
+                    }, 150);
+                }
+            });
             
-            // Event type filtering
-            if (showCard && typeValue !== 'all') {
-                const eventTypes = card.dataset.eventTypes.toLowerCase();
-                showCard = eventTypes.includes(typeValue);
-            }
-            
-            // Age group filtering
-            if (showCard && ageValue !== 'all') {
-                const ageGroups = card.dataset.ageGroups.toLowerCase();
-                showCard = ageGroups.includes(ageValue);
-            }
-            
-            // Search filtering
-            if (showCard && searchValue) {
-                const searchText = card.dataset.searchText;
-                showCard = searchText.includes(searchValue);
-            }
-            
-            // Show/hide card
-            if (showCard) {
-                card.style.display = 'block';
-                visibleCount++;
+            // Show/hide no events message
+            if (visibleCount === 0) {
+                eventsContainer.style.display = 'none';
+                noEventsMessage.style.display = 'block';
             } else {
-                card.style.display = 'none';
+                eventsContainer.style.display = 'grid';
+                noEventsMessage.style.display = 'none';
             }
-        });
-        
-        // Show/hide no events message
-        if (visibleCount === 0) {
-            eventsContainer.style.display = 'none';
-            noEventsMessage.style.display = 'block';
-        } else {
-            eventsContainer.style.display = 'block';
-            noEventsMessage.style.display = 'none';
-        }
+            
+            hideLoading();
+            
+            // Announce results to screen readers
+            const announcement = visibleCount === 0 
+                ? 'No events match your filters' 
+                : `Showing ${visibleCount} event${visibleCount === 1 ? '' : 's'}`;
+            
+            // Create or update aria-live region
+            let liveRegion = document.getElementById('filter-results-announcement');
+            if (!liveRegion) {
+                liveRegion = document.createElement('div');
+                liveRegion.id = 'filter-results-announcement';
+                liveRegion.setAttribute('aria-live', 'polite');
+                liveRegion.setAttribute('aria-atomic', 'true');
+                liveRegion.style.position = 'absolute';
+                liveRegion.style.left = '-10000px';
+                liveRegion.style.width = '1px';
+                liveRegion.style.height = '1px';
+                liveRegion.style.overflow = 'hidden';
+                document.body.appendChild(liveRegion);
+            }
+            liveRegion.textContent = announcement;
+        }, 300);
     }
     
     function clearAllFilters() {
@@ -261,18 +307,44 @@ document.addEventListener('DOMContentLoaded', function() {
         ageFilter.value = 'all';
         searchFilter.value = '';
         filterEvents();
+        
+        // Focus management for accessibility
+        dateFilter.focus();
     }
     
-    // Event listeners
+    // Event listeners with touch support
     dateFilter.addEventListener('change', filterEvents);
     typeFilter.addEventListener('change', filterEvents);
     ageFilter.addEventListener('change', filterEvents);
     searchFilter.addEventListener('input', filterEvents);
+    
+    // Touch-friendly button handling
     clearFiltersBtn.addEventListener('click', clearAllFilters);
+    clearFiltersBtn.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        clearAllFilters();
+    });
+    
     showAllEventsBtn.addEventListener('click', clearAllFilters);
+    showAllEventsBtn.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        clearAllFilters();
+    });
+    
+    // Keyboard navigation support
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            clearAllFilters();
+        }
+    });
     
     // Initial filter application
     filterEvents();
+    
+    // Handle orientation change on mobile
+    window.addEventListener('orientationchange', function() {
+        setTimeout(filterEvents, 100);
+    });
 });
 </script>
 {{ end }}
