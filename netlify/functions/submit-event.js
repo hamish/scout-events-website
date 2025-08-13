@@ -15,6 +15,12 @@ const cleanupRateLimit = () => {
 };
 
 exports.handler = async (event, context) => {
+  console.log('Function called:', {
+    method: event.httpMethod,
+    hasBody: !!event.body,
+    headers: event.headers
+  });
+  
   // Only allow POST requests
   if (event.httpMethod !== 'POST') {
     return {
@@ -221,6 +227,12 @@ exports.handler = async (event, context) => {
 
   } catch (error) {
     console.error('Error processing submission:', error);
+    console.error('Stack trace:', error.stack);
+    console.error('Environment check:', {
+      hasGithubToken: !!process.env.GITHUB_TOKEN,
+      hasGithubOwner: !!process.env.GITHUB_OWNER,
+      hasGithubRepo: !!process.env.GITHUB_REPO
+    });
     
     return {
       statusCode: 500,

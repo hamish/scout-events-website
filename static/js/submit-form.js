@@ -190,6 +190,7 @@ document.addEventListener('DOMContentLoaded', function() {
             data.registration_required = registrationRequiredCheckbox.checked;
 
             // Submit to Netlify Function
+            console.log('Submitting data:', data);
             const response = await fetch('/.netlify/functions/submit-event', {
                 method: 'POST',
                 headers: {
@@ -198,7 +199,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: JSON.stringify(data)
             });
 
+            console.log('Response status:', response.status);
             const result = await response.json();
+            console.log('Response body:', result);
 
             if (response.ok) {
                 showMessage(
