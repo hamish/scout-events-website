@@ -15,6 +15,16 @@ params:
   group_name: 'Local Scout Group'
   meeting_times: 'Fridays 7:00 PM - 9:00 PM'
   age_ranges: 'Ages 6-18 welcome'
+  
+  # Social media (optional)
+  social_media:
+    facebook: ''
+    instagram: ''
+    twitter: ''
+  
+  # Site branding
+  logo: '/images/logo.png'
+  favicon: '/images/favicon.ico'
 
 # Menu configuration
 menu:

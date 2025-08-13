@@ -6,70 +6,35 @@
     <title>{{ if .Title }}{{ .Title }} - {{ end }}{{ .Site.Title }}</title>
     <meta name="description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
     
-    <!-- Basic CSS for deployment test -->
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 20px;
-            max-width: 800px;
-            margin: 0 auto;
-            color: #333;
-        }
-        header {
-            border-bottom: 2px solid #007acc;
-            padding-bottom: 20px;
-            margin-bottom: 30px;
-        }
-        nav ul {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            gap: 20px;
-        }
-        nav a {
-            color: #007acc;
-            text-decoration: none;
-        }
-        nav a:hover {
-            text-decoration: underline;
-        }
-        .deployment-status {
-            background: #d4edda;
-            border: 1px solid #c3e6cb;
-            color: #155724;
-            padding: 15px;
-            border-radius: 5px;
-            margin: 20px 0;
-        }
-        footer {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-            text-align: center;
-            color: #666;
-        }
-    </style>
+    <!-- Favicon -->
+    {{ if .Site.Params.favicon }}
+    <link rel="icon" type="image/x-icon" href="{{ .Site.Params.favicon }}">
+    {{ end }}
+    
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="{{ "/css/main.css" | relURL }}">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ .Permalink }}">
+    <meta property="og:title" content="{{ if .Title }}{{ .Title }} - {{ end }}{{ .Site.Title }}">
+    <meta property="og:description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ .Permalink }}">
+    <meta property="twitter:title" content="{{ if .Title }}{{ .Title }} - {{ end }}{{ .Site.Title }}">
+    <meta property="twitter:description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
 </head>
 <body>
-    <header>
-        <h1><a href="/" style="color: inherit; text-decoration: none;">{{ .Site.Title }}</a></h1>
-        <nav>
-            <ul>
-                {{ range .Site.Menus.main }}
-                <li><a href="{{ .URL }}">{{ .Name }}</a></li>
-                {{ end }}
-            </ul>
-        </nav>
-    </header>
+    {{ partial "header.html" . }}
     
-    <main>
-        {{ block "main" . }}{{ end }}
+    <main class="main-content">
+        <div class="container">
+            {{ block "main" . }}{{ end }}
+        </div>
     </main>
     
-    <footer>
-        <p>&copy; {{ now.Year }} {{ .Site.Params.group_name }}. Deployment pipeline active.</p>
-    </footer>
+    {{ partial "footer.html" . }}
 </body>
 </html>

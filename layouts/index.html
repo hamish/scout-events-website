@@ -1,38 +1,42 @@
 {{ define "main" }}
-<div class="deployment-status">
-    <h2>✅ Netlify Deployment Pipeline Active</h2>
-    <p>This site is successfully deployed via Netlify with continuous deployment from GitHub.</p>
+<div class="alert alert-success">
+    <h2>✅ Site Structure Complete</h2>
+    <p>The basic site structure and navigation are now in place with responsive design and proper styling.</p>
 </div>
 
-<h2>Welcome to {{ .Site.Title }}</h2>
-<p>{{ .Site.Params.description }}</p>
+<div class="text-center mb-4">
+    <h2>Welcome to {{ .Site.Title }}</h2>
+    <p class="mb-3">{{ .Site.Params.description }}</p>
+    <a href="/events/" class="btn">View Upcoming Events</a>
+    <a href="/contact/" class="btn btn-secondary">Contact Us</a>
+</div>
 
-<h3>Deployment Information</h3>
-<ul>
-    <li><strong>Build Command:</strong> hugo --gc --minify</li>
-    <li><strong>Publish Directory:</strong> public</li>
-    <li><strong>Hugo Version:</strong> 0.121.0</li>
-    <li><strong>Continuous Deployment:</strong> Enabled from GitHub</li>
-</ul>
+<div class="card">
+    <h3>About Our Scout Group</h3>
+    <p><strong>{{ .Site.Params.group_name }}</strong> welcomes scouts of all ages to join our community of adventure, learning, and friendship.</p>
+    <ul>
+        <li><strong>Meeting Times:</strong> {{ .Site.Params.meeting_times }}</li>
+        <li><strong>Age Ranges:</strong> {{ .Site.Params.age_ranges }}</li>
+        <li><strong>Location:</strong> {{ .Site.Params.address }}</li>
+    </ul>
+    <p><a href="/about/" class="btn">Learn More About Us</a></p>
+</div>
 
-<h3>Group Information</h3>
-<ul>
-    <li><strong>Group:</strong> {{ .Site.Params.group_name }}</li>
-    <li><strong>Meeting Times:</strong> {{ .Site.Params.meeting_times }}</li>
-    <li><strong>Age Ranges:</strong> {{ .Site.Params.age_ranges }}</li>
-    <li><strong>Contact:</strong> {{ .Site.Params.contact_email }}</li>
-</ul>
-
-<h3>Next Steps</h3>
-<p>The deployment pipeline is now configured and working. Future tasks will add:</p>
-<ul>
-    <li>Event management system</li>
-    <li>Content management interface</li>
-    <li>Contact forms</li>
-    <li>Responsive design</li>
-</ul>
+<div class="card">
+    <h3>Upcoming Features</h3>
+    <p>This website is being developed with the following features:</p>
+    <ul>
+        <li>✅ Basic site structure and navigation</li>
+        <li>⏳ Event management system with filtering</li>
+        <li>⏳ Content management interface (CMS)</li>
+        <li>⏳ Contact forms with email notifications</li>
+        <li>⏳ Mobile-responsive event displays</li>
+    </ul>
+</div>
 
 {{ if .Content }}
-{{ .Content }}
+<div class="card">
+    {{ .Content }}
+</div>
 {{ end }}
 {{ end }}

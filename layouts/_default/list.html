@@ -2,7 +2,7 @@
 <h1>{{ .Title }}</h1>
 
 {{ if .Content }}
-<div class="content">
+<div class="card">
     {{ .Content }}
 </div>
 {{ end }}
@@ -10,22 +10,27 @@
 {{ if .Pages }}
 <section>
     {{ range .Pages }}
-    <article style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #eee;">
-        <h2><a href="{{ .Permalink }}" style="color: #007acc; text-decoration: none;">{{ .Title }}</a></h2>
+    <article class="card">
+        <h2><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
         {{ if .Date }}
-        <p><small>{{ .Date.Format "January 2, 2006" }}</small></p>
+        <p class="text-muted"><small>{{ .Date.Format "January 2, 2006" }}</small></p>
         {{ end }}
         {{ if .Summary }}
         <p>{{ .Summary }}</p>
         {{ end }}
+        <a href="{{ .Permalink }}" class="btn">Read More</a>
     </article>
     {{ end }}
 </section>
 {{ else }}
-<p>No content available yet.</p>
+<div class="card text-center">
+    <h3>No content available yet</h3>
+    <p>Check back soon for updates!</p>
+    <a href="/" class="btn">Return to Home</a>
+</div>
 {{ end }}
 
-<nav style="margin-top: 30px;">
-    <a href="/">&larr; Back to Home</a>
+<nav class="mt-4">
+    <a href="/" class="btn btn-secondary">&larr; Back to Home</a>
 </nav>
 {{ end }}

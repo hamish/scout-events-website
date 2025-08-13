@@ -1,9 +1,9 @@
 {{ define "main" }}
-<article>
+<article class="card">
     <h1>{{ .Title }}</h1>
     
     {{ if .Date }}
-    <p><small>Published: {{ .Date.Format "January 2, 2006" }}</small></p>
+    <p class="text-muted mb-3"><small>Published: {{ .Date.Format "January 2, 2006" }}</small></p>
     {{ end }}
     
     <div class="content">
@@ -11,7 +11,10 @@
     </div>
 </article>
 
-<nav style="margin-top: 30px;">
-    <a href="/">&larr; Back to Home</a>
+<nav class="mt-4">
+    <a href="/" class="btn btn-secondary">&larr; Back to Home</a>
+    {{ if .Section }}
+    <a href="/{{ .Section }}/" class="btn">More {{ .Section | title }}</a>
+    {{ end }}
 </nav>
 {{ end }}
