@@ -1,0 +1,2 @@
+# This file ensures the uploads directory is tracked by git
+# Media files uploaded through Decap CMS will be stored here
