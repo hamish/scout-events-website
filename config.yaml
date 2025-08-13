@@ -1,4 +1,4 @@
-baseURL: 'https://scout-events.netlify.app'
+baseURL: 'https://scout-events-website.netlify.app'
 languageCode: 'en-us'
 title: 'Scout Events'
 description: 'Stay updated with all scout group events and activities'
