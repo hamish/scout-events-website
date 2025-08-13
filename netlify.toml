@@ -18,6 +18,11 @@
     # Build optimization
     HUGO_CACHEDIR = "/opt/build/cache/hugo_cache"
 
+# Functions configuration
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
 # Redirect rules for clean URLs and SPA behavior
 [[redirects]]
   from = "/admin/*"

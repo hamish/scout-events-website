@@ -41,6 +41,9 @@ menu:
     - name: 'Group Info'
       url: '/pages/group-info/'
       weight: 35
+    - name: 'Submit Event'
+      url: '/pages/submit/'
+      weight: 37
     - name: 'Contact'
       url: '/contact/'
       weight: 40

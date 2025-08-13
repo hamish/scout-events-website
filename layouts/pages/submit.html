@@ -1,0 +1,36 @@
+{{ define "main" }}
+<article class="page-content">
+    <header class="page-header">
+        <h1 class="page-title">{{ .Title }}</h1>
+        {{ if .Params.description }}
+        <p class="page-description">{{ .Params.description }}</p>
+        {{ end }}
+    </header>
+
+    {{ if .Params.featured_image }}
+    <div class="page-featured-image">
+        <img src="{{ .Params.featured_image | relURL }}" alt="{{ .Title }}" class="img-fluid">
+    </div>
+    {{ end }}
+
+    <div class="page-body content">
+        {{ .Content }}
+    </div>
+
+    <footer class="page-footer">
+        <nav class="page-navigation">
+            <a href="/" class="btn btn-secondary">&larr; Back to Home</a>
+            <a href="/events/" class="btn btn-secondary">View Events &rarr;</a>
+        </nav>
+    </footer>
+</article>
+
+<script>
+// Load the form handling JavaScript
+document.addEventListener('DOMContentLoaded', function() {
+    const script = document.createElement('script');
+    script.src = '/js/submit-form.js';
+    document.head.appendChild(script);
+});
+</script>
+{{ end }}
