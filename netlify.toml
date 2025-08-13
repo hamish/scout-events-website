@@ -79,11 +79,10 @@
 
 [build.processing.images]
   compress = true
-#
- Build notifications and error handling
-[build.processing.skip_processing]
-  # Skip processing on build failure
-  on_failure = false
+# Build notifications and error handling
+# [build.processing.skip_processing]
+#   # Skip processing on build failure
+#   on_failure = false
 
 # Environment-specific error pages
 [[redirects]]
@@ -103,14 +102,3 @@
 # - Build succeeded: POST to webhook URL  
 # - Build failed: POST to webhook URL
 
-# Performance optimizations
-[build.processing.images]
-  compress = true
-  
-[build.processing.css]
-  bundle = true
-  minify = true
-  
-[build.processing.js]
-  bundle = true
-  minify = true
