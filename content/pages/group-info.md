@@ -1,6 +1,7 @@
 ---
 title: "Group Information"
-type: "page"
+type: "pages"
+slug: "group-info"
 date: 2024-01-01
 description: "Important information about our scout group including meeting times, locations, and contact details"
 menu_order: 2

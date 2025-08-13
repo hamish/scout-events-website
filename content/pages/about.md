@@ -1,6 +1,7 @@
 ---
 title: "About Our Scout Group"
-type: "page"
+type: "pages"
+slug: "about"
 date: 2024-01-01
 description: "Learn more about our scout group, our mission, and what we do in our community"
 menu_order: 1
