@@ -1,0 +1,7 @@
+{{- $eventType := .eventType -}}
+{{- range $.Site.Data.site.event_config.event_types -}}
+  {{- if eq .value $eventType -}}
+    {{- .label -}}
+    {{- break -}}
+  {{- end -}}
+{{- end -}}

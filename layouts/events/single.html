@@ -55,7 +55,7 @@
             {{ if .Params.event_type }}
             <div class="event-types-detail">
                 <span class="meta-label">Event Type:</span>
-                <span class="event-type-badge-detail">{{ .Params.event_type | title }}</span>
+                <span class="event-type-badge-detail">{{ partial "event-type-label.html" (dict "eventType" .Params.event_type) }}</span>
             </div>
             {{ end }}
 
@@ -63,7 +63,7 @@
             <div class="age-groups-detail">
                 <span class="meta-label">Age Groups:</span>
                 {{ range .Params.age_groups }}
-                <span class="age-group-badge-detail">{{ . | title }}</span>
+                <span class="age-group-badge-detail">{{ partial "age-group-label.html" (dict "ageGroup" .) }}</span>
                 {{ end }}
             </div>
             {{ end }}
