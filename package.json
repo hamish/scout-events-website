@@ -5,11 +5,19 @@
   "dependencies": {
     "@octokit/rest": "^19.0.7"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "stylelint": "^15.10.1",
+    "stylelint-config-standard": "^34.0.0"
+  },
   "scripts": {
     "build": "hugo --gc --minify --cleanDestinationDir --enableGitInfo",
     "dev": "hugo server -D --bind 0.0.0.0",
-    "clean": "rm -rf public resources"
+    "clean": "rm -rf public resources",
+    "lint:css": "stylelint 'static/css/**/*.css'",
+    "lint:css:fix": "stylelint 'static/css/**/*.css' --fix",
+    "lint": "npm run lint:css",
+    "analyze:bundle": "./scripts/analyze.sh",
+    "audit:performance": "npx lighthouse http://localhost:1313 --output html --output-path lighthouse-reports/performance-$(date +%Y%m%d-%H%M%S).html"
   },
   "repository": {
     "type": "git",

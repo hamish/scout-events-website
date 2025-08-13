@@ -1,0 +1,46 @@
+# Pre-commit hooks configuration for Scout Events Website
+# To install: pip install pre-commit && pre-commit install
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: check-json
+      - id: pretty-format-json
+        args: ['--autofix']
+
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.32.0
+    hooks:
+      - id: yamllint
+        args: ['-d', '{extends: default, rules: {line-length: {max: 120}}}']
+
+  - repo: local
+    hooks:
+      - id: hugo-build-test
+        name: Test Hugo build
+        entry: hugo --gc --minify --cleanDestinationDir
+        language: system
+        files: \.(md|html|css|js|yaml|yml|toml)$
+        pass_filenames: false
+
+      - id: css-lint
+        name: CSS Linting
+        entry: npm run lint:css
+        language: system
+        files: \.css$
+        require_serial: true
+
+      - id: validate-frontmatter
+        name: Validate Hugo frontmatter
+        entry: bash -c 'find content -name "*.md" -exec grep -l "^---$" {} \; | while read file; do echo "Checking $file"; head -20 "$file" | grep -q "title:" || (echo "Missing title in $file" && exit 1); done'
+        language: system
+        files: content/.*\.md$
+        pass_filenames: false

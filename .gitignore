@@ -34,3 +34,30 @@ node_modules/
 .env.production
 # Local Netlify folder
 .netlify
+
+# Build artifacts and cache
+/assets/jsconfig.json
+/.hugo_build.lock
+/hugo_stats.json
+/package-lock.json
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Development tools
+/.stylelintrc.json
+/lighthouse-reports/
+/coverage/
+
+# Backup and temporary files
+*.backup
+*.bak
+.cache/
+
+# IDE and tool-specific files
+/.claude/
+*.code-workspace
+
+# Testing artifacts
+/test-results/
+/screenshots/

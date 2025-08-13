@@ -13,8 +13,19 @@
     <!-- Preload critical resources -->
     <link rel="preload" href="{{ "/css/main.css" | relURL }}" as="style">
     
-    <!-- Main Stylesheet -->
-    <link rel="stylesheet" href="{{ "/css/main.css" | relURL }}">
+    <!-- Font optimization -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Critical CSS inline (for future implementation) -->
+    <!-- <style>{{ readFile "assets/css/critical.css" | safeCSS }}</style> -->
+    
+    <!-- Main Stylesheet with optimized loading -->
+    <link rel="stylesheet" href="{{ "/css/main.css" | relURL }}" media="all">
+    
+    <!-- Performance hints -->
+    <link rel="dns-prefetch" href="//scout-events-website.netlify.app">
+    <link rel="preconnect" href="https://api.netlify.com">
     
     <!-- SEO and Social Media Meta Tags -->
     {{ partial "seo.html" . }}
