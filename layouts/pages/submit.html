@@ -32,6 +32,12 @@
 document.addEventListener('DOMContentLoaded', function() {
     const script = document.createElement('script');
     script.src = '/js/submit-form.js';
+    script.onload = function() {
+        console.log('Submit form JavaScript loaded successfully');
+    };
+    script.onerror = function() {
+        console.error('Failed to load submit form JavaScript');
+    };
     document.head.appendChild(script);
 });
 </script>

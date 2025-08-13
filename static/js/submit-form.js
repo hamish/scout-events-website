@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('Submit form DOM loaded, looking for form elements...');
     const form = document.getElementById('event-submit-form');
     const submitBtn = document.getElementById('submit-btn');
     const messagesDiv = document.getElementById('form-messages');
@@ -6,6 +7,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const registrationLinkGroup = document.getElementById('registration_link_group');
     const descriptionTextarea = document.getElementById('description');
     const descriptionCount = document.getElementById('description-count');
+    
+    console.log('Form elements found:', {
+        form: !!form,
+        submitBtn: !!submitBtn,
+        messagesDiv: !!messagesDiv,
+        registrationRequiredCheckbox: !!registrationRequiredCheckbox,
+        registrationLinkGroup: !!registrationLinkGroup,
+        descriptionTextarea: !!descriptionTextarea,
+        descriptionCount: !!descriptionCount
+    });
+    
+    if (!form) {
+        console.error('Submit form not found! Cannot attach event listeners.');
+        return;
+    }
 
     // Toggle registration link field visibility
     registrationRequiredCheckbox.addEventListener('change', function() {
@@ -154,6 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Form submission
     form.addEventListener('submit', async function(e) {
+        console.log('Form submitted, preventing default behavior...');
         e.preventDefault();
 
         if (!validateForm()) {
