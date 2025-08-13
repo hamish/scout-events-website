@@ -10,7 +10,7 @@ media_folder: "static/images/uploads"
 public_folder: "/images/uploads"
 
 # Site URL for preview functionality
-site_url: https://your-site.netlify.app # Replace with actual site URL
+site_url: https://scout-events-website.netlify.app # Replace with actual site URL
 
 # Collections define the structure for different content types
 collections:
