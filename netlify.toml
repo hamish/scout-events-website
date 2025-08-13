@@ -1,0 +1,48 @@
+[build]
+  # Hugo build command
+  command = "hugo --gc --minify"
+  
+  # Directory to publish (Hugo's default output directory)
+  publish = "public"
+  
+  # Hugo version to use
+  [build.environment]
+    HUGO_VERSION = "0.121.0"
+    NODE_VERSION = "18"
+
+# Redirect rules for clean URLs and SPA behavior
+[[redirects]]
+  from = "/admin/*"
+  to = "/admin/index.html"
+  status = 200
+
+# Headers for security and performance
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Form handling configuration
+[forms]
+  # Enable Netlify Forms
+  [forms.contact]
+    name = "contact"
+    action = "/contact/success/"
+    
+# Branch deploy settings
+[context.production]
+  command = "hugo --gc --minify"
+
+[context.deploy-preview]
+  command = "hugo --gc --minify --buildFuture -b $DEPLOY_PRIME_URL"
+
+[context.branch-deploy]
+  command = "hugo --gc --minify --buildFuture -b $DEPLOY_PRIME_URL"
