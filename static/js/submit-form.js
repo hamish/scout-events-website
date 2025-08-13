@@ -1,5 +1,6 @@
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Submit form DOM loaded, looking for form elements...');
+// Function to initialize the form
+function initializeSubmitForm() {
+    console.log('Initializing submit form, looking for form elements...');
     const form = document.getElementById('event-submit-form');
     const submitBtn = document.getElementById('submit-btn');
     const messagesDiv = document.getElementById('form-messages');
@@ -295,4 +296,12 @@ document.addEventListener('DOMContentLoaded', function() {
             errorEl.textContent = '';
         }
     });
-});
+}
+
+// Run initialization when script loads
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeSubmitForm);
+} else {
+    // DOM already loaded
+    initializeSubmitForm();
+}

@@ -27,18 +27,6 @@
     </footer>
 </article>
 
-<script>
-// Load the form handling JavaScript
-document.addEventListener('DOMContentLoaded', function() {
-    const script = document.createElement('script');
-    script.src = '/js/submit-form.js';
-    script.onload = function() {
-        console.log('Submit form JavaScript loaded successfully');
-    };
-    script.onerror = function() {
-        console.error('Failed to load submit form JavaScript');
-    };
-    document.head.appendChild(script);
-});
-</script>
+<!-- Load form handling JavaScript directly -->
+<script src="/js/submit-form.js"></script>
 {{ end }}
