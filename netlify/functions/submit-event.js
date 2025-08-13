@@ -205,8 +205,8 @@ exports.handler = async (event, context) => {
     // Check if file already exists
     try {
       await octokit.rest.repos.getContent({
-        owner: process.env.GITHUB_OWNER,
-        repo: process.env.GITHUB_REPO,
+        owner: process.env.GITHUB_REPO_OWNER,
+        repo: process.env.GITHUB_REPO_NAME,
         path: filepath
       });
       
@@ -230,8 +230,8 @@ exports.handler = async (event, context) => {
     console.error('Stack trace:', error.stack);
     console.error('Environment check:', {
       hasGithubToken: !!process.env.GITHUB_TOKEN,
-      hasGithubOwner: !!process.env.GITHUB_OWNER,
-      hasGithubRepo: !!process.env.GITHUB_REPO
+      hasGithubOwner: !!process.env.GITHUB_REPO_OWNER,
+      hasGithubRepo: !!process.env.GITHUB_REPO_NAME
     });
     
     return {
@@ -285,8 +285,8 @@ ${data.description}
 
   // Create the file in GitHub
   await octokit.rest.repos.createOrUpdateFileContents({
-    owner: process.env.GITHUB_OWNER,
-    repo: process.env.GITHUB_REPO,
+    owner: process.env.GITHUB_REPO_OWNER,
+    repo: process.env.GITHUB_REPO_NAME,
     path: filepath,
     message: `Add submitted event: ${data.title}
 
