@@ -1,45 +1,43 @@
-title: "Scout Events Website"
-description: "Stay up to date with all our scout group activities and events"
-contact_email: "contact@scoutgroup.org"
-phone: "(555) 123-4567"
-address: "123 Scout Street, Community City, ST 12345"
+title: Scout Events Website
+description: Stay up to date with all our scout group activities and events
+contact_email: contact@scoutgroup.org
+phone: (555) 123-4567
+address: 123 Scout Street, Community City, ST 12345
 social_media:
   facebook: ""
   instagram: ""
   twitter: ""
 group_info:
-  group_name: "1st Example Scout Group"
-  meeting_times: "Fridays 7:00 PM - 9:00 PM"
-  age_ranges: "Ages 5-25"
-  meeting_location: "Scout Hall"
-
+  group_name: 1st Example Scout Group
+  meeting_times: Fridays 7:00 PM - 9:00 PM
+  age_ranges: Ages 5-25
+  meeting_location: Scout Hall
 event_config:
   event_types:
-    - label: "Meeting"
-      value: "meeting"
-    - label: "Camping"
-      value: "camping"
-    - label: "Community Service"
-      value: "community_service"
-    - label: "Fundraising" 
-      value: "fundraising"
-    - label: "Social Event"
-      value: "social"
-    - label: "Training"
-      value: "training"
-    - label: "Competition"
-      value: "competition"
-  
+    - label: Meeting
+      value: meeting
+    - label: Camping
+      value: camping
+    - label: Community Service
+      value: community_service
+    - label: Fundraising
+      value: fundraising
+    - label: Social Event
+      value: social
+    - label: Training
+      value: training
+    - label: Competition
+      value: competition
   age_groups:
-    - label: "Beavers (5-7 years)"
-      value: "beavers"
-    - label: "Cubs (8-10 years)"
-      value: "cubs"
-    - label: "Scouts (11-14 years)"
-      value: "scouts"
-    - label: "Venturers (15-17 years)"
-      value: "venturers"
-    - label: "Rovers (18-25 years)"
-      value: "rovers"
-    - label: "All Ages"
-      value: "all"
+    - label: Joeys (5-7 years)
+      value: joeys
+    - label: Cubs (8-10 years)
+      value: cubs
+    - label: Scouts (11-14 years)
+      value: scouts
+    - label: Venturers (15-17 years)
+      value: venturers
+    - label: Rovers (18-25 years)
+      value: rovers
+    - label: Adults
+      value: adults
