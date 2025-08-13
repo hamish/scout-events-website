@@ -1,0 +1,146 @@
+{{ define "main" }}
+<div class="error-page">
+    <div class="container">
+        <div class="error-content">
+            <h1 class="error-title">404 - Page Not Found</h1>
+            <div class="error-icon">🔍</div>
+            <p class="error-message">
+                Sorry, the page you're looking for doesn't exist or has been moved.
+            </p>
+            
+            <div class="error-suggestions">
+                <h3>What you can do:</h3>
+                <ul>
+                    <li><a href="{{ "/" | relURL }}">Go to Homepage</a></li>
+                    <li><a href="{{ "/events/" | relURL }}">Browse Events</a></li>
+                    <li><a href="{{ "/contact/" | relURL }}">Contact Us</a></li>
+                    <li>Use the search function above</li>
+                </ul>
+            </div>
+            
+            <div class="error-actions">
+                <a href="{{ "/" | relURL }}" class="btn btn-primary">
+                    🏠 Return Home
+                </a>
+                <a href="javascript:history.back()" class="btn btn-secondary">
+                    ← Go Back
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.error-page {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.error-content {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.error-title {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.error-icon {
+    font-size: 4rem;
+    margin: 1rem 0;
+}
+
+.error-message {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.error-suggestions {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin: 2rem 0;
+    text-align: left;
+}
+
+.error-suggestions h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.error-suggestions ul {
+    margin: 1rem 0 0 0;
+    padding-left: 1.5rem;
+}
+
+.error-suggestions li {
+    margin: 0.5rem 0;
+}
+
+.error-suggestions a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.error-suggestions a:hover {
+    text-decoration: underline;
+}
+
+.error-actions {
+    margin-top: 2rem;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    margin: 0.5rem;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #545b62;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .error-title {
+        font-size: 2rem;
+    }
+    
+    .error-icon {
+        font-size: 3rem;
+    }
+    
+    .btn {
+        display: block;
+        margin: 0.5rem 0;
+    }
+}
+</style>
+{{ end }}

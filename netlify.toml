@@ -1,14 +1,22 @@
 [build]
-  # Hugo build command
-  command = "hugo --gc --minify"
+  # Hugo build command with optimization flags
+  command = "./scripts/build.sh"
   
   # Directory to publish (Hugo's default output directory)
   publish = "public"
+  
+  # Build timeout (default is 15 minutes)
+  command_timeout = "10m"
   
   # Hugo version to use
   [build.environment]
     HUGO_VERSION = "0.121.0"
     NODE_VERSION = "18"
+    # Production environment variables
+    HUGO_ENV = "production"
+    HUGO_ENABLEGITINFO = "true"
+    # Build optimization
+    HUGO_CACHEDIR = "/opt/build/cache/hugo_cache"
 
 # Redirect rules for clean URLs and SPA behavior
 [[redirects]]
@@ -38,12 +46,71 @@
     action = "/contact/success/"
     error = "/contact/error/"
     
-# Branch deploy settings
+# Branch deploy settings with optimization
 [context.production]
-  command = "hugo --gc --minify"
+  command = "hugo --gc --minify --cleanDestinationDir --enableGitInfo"
+  [context.production.environment]
+    HUGO_ENV = "production"
 
 [context.deploy-preview]
-  command = "hugo --gc --minify --buildFuture -b $DEPLOY_PRIME_URL"
+  command = "hugo --gc --minify --buildFuture --cleanDestinationDir --enableGitInfo -b $DEPLOY_PRIME_URL"
+  [context.deploy-preview.environment]
+    HUGO_ENV = "staging"
 
 [context.branch-deploy]
-  command = "hugo --gc --minify --buildFuture -b $DEPLOY_PRIME_URL"
+  command = "hugo --gc --minify --buildFuture --cleanDestinationDir --enableGitInfo -b $DEPLOY_PRIME_URL"
+  [context.branch-deploy.environment]
+    HUGO_ENV = "development"
+
+# Build failure handling
+[build.processing]
+  skip_processing = false
+
+[build.processing.css]
+  bundle = true
+  minify = true
+
+[build.processing.js]
+  bundle = true
+  minify = true
+
+[build.processing.html]
+  pretty_urls = true
+
+[build.processing.images]
+  compress = true
+#
+ Build notifications and error handling
+[build.processing.skip_processing]
+  # Skip processing on build failure
+  on_failure = false
+
+# Environment-specific error pages
+[[redirects]]
+  from = "/404"
+  to = "/404.html"
+  status = 404
+
+[[redirects]]
+  from = "/500"
+  to = "/500.html"
+  status = 500
+
+# Build hooks for notifications (configure in Netlify UI)
+# These can be used with external services like Slack, Discord, etc.
+# Example webhook URLs would be configured in Netlify dashboard:
+# - Build started: POST to webhook URL
+# - Build succeeded: POST to webhook URL  
+# - Build failed: POST to webhook URL
+
+# Performance optimizations
+[build.processing.images]
+  compress = true
+  
+[build.processing.css]
+  bundle = true
+  minify = true
+  
+[build.processing.js]
+  bundle = true
+  minify = true

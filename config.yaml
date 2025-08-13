@@ -54,6 +54,38 @@ taxonomies:
 # Build settings
 build:
   publishDir: 'public'
+  writeStats: true
+  
+# Production optimization settings
+minify:
+  disableCSS: false
+  disableHTML: false
+  disableJS: false
+  disableJSON: false
+  disableSVG: false
+  disableXML: false
+  minifyOutput: true
+  
+# Image processing settings
+imaging:
+  resampleFilter: 'CatmullRom'
+  quality: 85
+  anchor: 'smart'
+  
+# Cache settings
+caches:
+  assets:
+    dir: ':resourceDir/_gen'
+    maxAge: '1h'
+  getcsv:
+    maxAge: '1h'
+  getjson:
+    maxAge: '1h'
+  images:
+    dir: ':resourceDir/_gen'
+    maxAge: '1h'
+  modules:
+    maxAge: '1h'
 
 # Markup settings
 markup:
