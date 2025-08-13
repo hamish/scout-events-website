@@ -1,0 +1,77 @@
+# Local development configuration for Decap CMS
+# Use this for testing without GitHub OAuth setup
+
+backend:
+  name: test-repo
+
+# Media files will be stored in the repo under static/images/uploads
+media_folder: "static/images/uploads"
+public_folder: "/images/uploads"
+
+# Site URL for preview functionality
+site_url: http://localhost:1313
+
+# Collections define the structure for different content types
+collections:
+  # Events collection
+  - name: "events"
+    label: "Events"
+    folder: "content/events"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    editor:
+      preview: true
+    fields:
+      - label: "Title"
+        name: "title"
+        widget: "string"
+        required: true
+        hint: "Enter a descriptive title for the event"
+      - label: "Start Date"
+        name: "start_date"
+        widget: "datetime"
+        required: true
+        date_format: "YYYY-MM-DD"
+        time_format: false
+        picker_utc: false
+        hint: "Select the date when the event starts"
+      - label: "Start Time"
+        name: "start_time"
+        widget: "string"
+        required: true
+        pattern: ["^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$", "Please enter time in HH:MM format (24-hour), e.g., 19:00"]
+        hint: "Enter start time in 24-hour format (e.g., 19:00 for 7:00 PM)"
+      - label: "Location"
+        name: "location"
+        widget: "string"
+        required: true
+        hint: "Enter the full address or location name where the event will take place"
+      - label: "Event Type"
+        name: "event_type"
+        widget: "select"
+        required: true
+        hint: "Select the category that best describes this event"
+        options:
+          - {label: "Meeting", value: "meeting"}
+          - {label: "Camping", value: "camping"}
+          - {label: "Community Service", value: "community_service"}
+          - {label: "Social", value: "social"}
+      - label: "Age Groups"
+        name: "age_groups"
+        widget: "select"
+        required: true
+        multiple: true
+        min: 1
+        hint: "Select all age groups that can participate in this event"
+        options:
+          - {label: "Cubs (8-10 years)", value: "cubs"}
+          - {label: "Scouts (11-14 years)", value: "scouts"}
+          - {label: "All Ages", value: "all"}
+      - label: "Description"
+        name: "description"
+        widget: "markdown"
+        required: true
+        hint: "Provide a detailed description of the event"
+
+# Enable preview functionality
+show_preview_links: true

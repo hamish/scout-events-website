@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: your-username/scout-events-website # Replace with actual GitHub repo
+  repo: hamish/scout-events-website # Updated with actual GitHub repo
   branch: main # Branch to update (optional; defaults to master)
   base_url: https://api.netlify.com # Path to ext auth provider
   auth_endpoint: auth # Path to ext auth provider
@@ -175,5 +175,9 @@ show_preview_links: true
 # Logo for the CMS interface
 logo_url: /images/scout-logo.png # Optional: Add your scout group logo
 
-# Local backend for development (comment out for production)
+# Local backend for development (uncomment for local testing)
 # local_backend: true
+
+# For local development without OAuth, you can also use:
+# backend:
+#   name: git-gateway
