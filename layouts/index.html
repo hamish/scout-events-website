@@ -1,0 +1,38 @@
+{{ define "main" }}
+<div class="deployment-status">
+    <h2>✅ Netlify Deployment Pipeline Active</h2>
+    <p>This site is successfully deployed via Netlify with continuous deployment from GitHub.</p>
+</div>
+
+<h2>Welcome to {{ .Site.Title }}</h2>
+<p>{{ .Site.Params.description }}</p>
+
+<h3>Deployment Information</h3>
+<ul>
+    <li><strong>Build Command:</strong> hugo --gc --minify</li>
+    <li><strong>Publish Directory:</strong> public</li>
+    <li><strong>Hugo Version:</strong> 0.121.0</li>
+    <li><strong>Continuous Deployment:</strong> Enabled from GitHub</li>
+</ul>
+
+<h3>Group Information</h3>
+<ul>
+    <li><strong>Group:</strong> {{ .Site.Params.group_name }}</li>
+    <li><strong>Meeting Times:</strong> {{ .Site.Params.meeting_times }}</li>
+    <li><strong>Age Ranges:</strong> {{ .Site.Params.age_ranges }}</li>
+    <li><strong>Contact:</strong> {{ .Site.Params.contact_email }}</li>
+</ul>
+
+<h3>Next Steps</h3>
+<p>The deployment pipeline is now configured and working. Future tasks will add:</p>
+<ul>
+    <li>Event management system</li>
+    <li>Content management interface</li>
+    <li>Contact forms</li>
+    <li>Responsive design</li>
+</ul>
+
+{{ if .Content }}
+{{ .Content }}
+{{ end }}
+{{ end }}
