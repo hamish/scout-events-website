@@ -1,6 +1,7 @@
 ---
 title: "Submit an Event"
-type: "page"
+type: "pages"
+slug: "submit"
 date: 2024-01-01
 description: "Submit events for our scout group calendar - open to community members and organizations"
 menu_order: 3
