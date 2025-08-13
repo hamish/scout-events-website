@@ -3,8 +3,8 @@ const { Octokit } = require('@octokit/rest');
 // Rate limiting store (in production, use Redis or similar)
 const rateLimitStore = new Map();
 
-// Clean up old rate limit entries periodically
-setInterval(() => {
+// Clean up old rate limit entries on each request
+const cleanupRateLimit = () => {
   const now = Date.now();
   const oneDayAgo = now - (24 * 60 * 60 * 1000);
   for (const [key, data] of rateLimitStore.entries()) {
@@ -12,7 +12,7 @@ setInterval(() => {
       rateLimitStore.delete(key);
     }
   }
-}, 60 * 60 * 1000); // Clean up hourly
+};
 
 exports.handler = async (event, context) => {
   // Only allow POST requests
@@ -42,6 +42,9 @@ exports.handler = async (event, context) => {
   }
 
   try {
+    // Clean up old rate limit entries
+    cleanupRateLimit();
+    
     // Parse request body
     const data = JSON.parse(event.body);
     
