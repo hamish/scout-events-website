@@ -1,0 +1,56 @@
+{{ define "main" }}
+<article class="error-page">
+    <div class="error-container">
+        <div class="error-icon">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" stroke="#e74c3c" stroke-width="2" fill="#fdf2f2"/>
+                <path d="m15 9-6 6" stroke="#e74c3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="m9 9 6 6" stroke="#e74c3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+        
+        <header class="page-header">
+            <h1>{{ .Title }}</h1>
+            {{ if .Description }}
+            <p class="page-description">{{ .Description }}</p>
+            {{ end }}
+        </header>
+        
+        <div class="error-content">
+            {{ .Content }}
+        </div>
+        
+        <div class="error-actions">
+            <a href="/contact/" class="btn btn-primary">Try Again</a>
+            <a href="/" class="btn btn-secondary">Return to Homepage</a>
+        </div>
+        
+        <div class="error-help">
+            <details>
+                <summary>Technical Details</summary>
+                <p>If you continue to experience issues, please include the following information when contacting us directly:</p>
+                <ul>
+                    <li>Time of error: <span id="error-time"></span></li>
+                    <li>Browser: <span id="browser-info"></span></li>
+                    <li>Page URL: <span id="page-url"></span></li>
+                </ul>
+            </details>
+        </div>
+    </div>
+</article>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Focus management for accessibility
+    const heading = document.querySelector('h1');
+    if (heading) {
+        heading.focus();
+    }
+    
+    // Populate technical details
+    document.getElementById('error-time').textContent = new Date().toLocaleString();
+    document.getElementById('browser-info').textContent = navigator.userAgent.split(' ').slice(-2).join(' ');
+    document.getElementById('page-url').textContent = window.location.href;
+});
+</script>
+{{ end }}

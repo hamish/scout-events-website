@@ -21,4 +21,4 @@ We'd love to hear from you! Whether you're interested in joining our scout group
 
 ## Contact Form
 
-*Contact form will be implemented in a later task*
+Use the form below to send us a message. We'll get back to you as soon as possible!

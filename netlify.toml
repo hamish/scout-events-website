@@ -32,10 +32,11 @@
 
 # Form handling configuration
 [forms]
-  # Enable Netlify Forms
+  # Enable Netlify Forms with error handling
   [forms.contact]
     name = "contact"
     action = "/contact/success/"
+    error = "/contact/error/"
     
 # Branch deploy settings
 [context.production]
