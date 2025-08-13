@@ -1,0 +1,93 @@
+{{ define "main" }}
+<div class="container">
+  <div class="taxonomy-header">
+    <h1>Events by Type: {{ .Title | title }}</h1>
+    <p class="taxonomy-description">
+      {{ if eq .Title "meeting" }}
+        Regular scout meetings, planning sessions, and group gatherings.
+      {{ else if eq .Title "camping" }}
+        Camping trips, outdoor adventures, and overnight activities.
+      {{ else if eq .Title "community_service" }}
+        Community service projects and volunteer opportunities.
+      {{ else if eq .Title "fundraising" }}
+        Fundraising events and activities to support the scout group.
+      {{ else if eq .Title "social" }}
+        Social events, parties, and fun activities for scouts and families.
+      {{ else if eq .Title "training" }}
+        Training sessions, skill development, and educational activities.
+      {{ else if eq .Title "competition" }}
+        Competitions, contests, and competitive activities.
+      {{ else }}
+        Events categorized as {{ .Title }}.
+      {{ end }}
+    </p>
+  </div>
+
+  <div class="taxonomy-navigation">
+    <h3>Browse by Event Type:</h3>
+    <div class="taxonomy-links">
+      {{ range $name, $taxonomy := .Site.Taxonomies.event_types }}
+        <a href="{{ "/event_types/" | relURL }}{{ $name | urlize }}" 
+           class="taxonomy-link {{ if eq $name $.Title }}active{{ end }}">
+          {{ $name | title }} ({{ $taxonomy.Count }})
+        </a>
+      {{ end }}
+    </div>
+  </div>
+
+  <div class="events-grid">
+    {{ $events := .Pages }}
+    {{ if $events }}
+      {{ range $events.ByParam "start_date" }}
+        <article class="event-card">
+          <div class="event-header">
+            <h2><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
+            <div class="event-meta">
+              {{ partial "event-datetime.html" . }}
+            </div>
+          </div>
+          
+          <div class="event-details">
+            <p class="event-location">
+              <strong>Location:</strong> {{ .Params.location }}
+            </p>
+            
+            <div class="event-description">
+              {{ .Summary }}
+            </div>
+            
+            <div class="event-taxonomies">
+              {{ if .Params.event_types }}
+                {{ range .Params.event_types }}
+                  <span class="event-type-badge">{{ . | title }}</span>
+                {{ end }}
+              {{ end }}
+              
+              {{ if .Params.age_groups }}
+                <div class="age-groups">
+                  {{ range .Params.age_groups }}
+                    <span class="age-group-badge">{{ . | title }}</span>
+                  {{ end }}
+                </div>
+              {{ end }}
+            </div>
+          </div>
+          
+          <div class="event-actions">
+            <a href="{{ .Permalink }}" class="read-more">Read More</a>
+          </div>
+        </article>
+      {{ end }}
+    {{ else }}
+      <div class="no-events">
+        <p>No events found for this event type.</p>
+        <a href="{{ "/events/" | relURL }}" class="back-link">← View All Events</a>
+      </div>
+    {{ end }}
+  </div>
+
+  <div class="taxonomy-footer">
+    <a href="{{ "/events/" | relURL }}" class="back-link">← Back to All Events</a>
+  </div>
+</div>
+{{ end }}

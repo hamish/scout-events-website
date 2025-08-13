@@ -1,0 +1,51 @@
+{{ define "main" }}
+<div class="container">
+  <div class="taxonomy-header">
+    <h1>Browse Events by Age Group</h1>
+    <p class="taxonomy-description">
+      Find events suitable for your scout's age group and development level.
+    </p>
+  </div>
+
+  <div class="taxonomy-terms-grid">
+    {{ range $name, $taxonomy := .Site.Taxonomies.age_groups }}
+      <div class="taxonomy-term-card">
+        <h3>
+          <a href="{{ "/age_groups/" | relURL }}{{ $name | urlize }}">
+            {{ $name | title }}
+          </a>
+        </h3>
+        <p class="term-description">
+          {{ if eq $name "beavers" }}
+            Events suitable for Beavers (ages 6-8) - fun activities and basic scouting skills.
+          {{ else if eq $name "cubs" }}
+            Events for Cubs (ages 8-11) - adventure activities and skill development.
+          {{ else if eq $name "scouts" }}
+            Events for Scouts (ages 11-14) - outdoor adventures and leadership development.
+          {{ else if eq $name "venturers" }}
+            Events for Venturers (ages 14-17) - challenging activities and community service.
+          {{ else if eq $name "rovers" }}
+            Events for Rovers (ages 18-25) - leadership opportunities and advanced activities.
+          {{ else if eq $name "all" }}
+            Events suitable for all age groups and families.
+          {{ else }}
+            Events for {{ $name }} age group.
+          {{ end }}
+        </p>
+        <div class="term-meta">
+          <span class="event-count">{{ $taxonomy.Count }} event{{ if ne $taxonomy.Count 1 }}s{{ end }}</span>
+        </div>
+        <div class="term-actions">
+          <a href="{{ "/age_groups/" | relURL }}{{ $name | urlize }}" class="view-events-btn">
+            View Events
+          </a>
+        </div>
+      </div>
+    {{ end }}
+  </div>
+
+  <div class="taxonomy-footer">
+    <a href="{{ "/events/" | relURL }}" class="back-link">← Back to All Events</a>
+  </div>
+</div>
+{{ end }}

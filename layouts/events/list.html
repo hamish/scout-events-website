@@ -1,0 +1,278 @@
+{{ define "main" }}
+<div class="events-page">
+    <div class="events-header">
+        <h1>{{ .Title }}</h1>
+        {{ if .Content }}
+        <div class="events-description">
+            {{ .Content }}
+        </div>
+        {{ end }}
+    </div>
+
+    <!-- Event Filtering Controls -->
+    <div class="events-filters">
+        <div class="filter-section">
+            <h3>Filter Events</h3>
+            <div class="filter-controls">
+                <div class="filter-group">
+                    <label for="date-filter">Date Range:</label>
+                    <select id="date-filter" class="filter-select">
+                        <option value="all">All Events</option>
+                        <option value="upcoming">Upcoming Events</option>
+                        <option value="this-month">This Month</option>
+                        <option value="next-month">Next Month</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="type-filter">Event Type:</label>
+                    <select id="type-filter" class="filter-select">
+                        <option value="all">All Types</option>
+                        {{ range .Site.Taxonomies.event_types }}
+                        <option value="{{ .Page.Title | lower }}">{{ .Page.Title | title }}</option>
+                        {{ end }}
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="age-filter">Age Group:</label>
+                    <select id="age-filter" class="filter-select">
+                        <option value="all">All Ages</option>
+                        {{ range .Site.Taxonomies.age_groups }}
+                        <option value="{{ .Page.Title | lower }}">{{ .Page.Title | title }}</option>
+                        {{ end }}
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="search-filter">Search:</label>
+                    <input type="text" id="search-filter" class="filter-input" placeholder="Search events...">
+                </div>
+                
+                <button id="clear-filters" class="btn btn-secondary">Clear Filters</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Events List -->
+    {{ if .Pages }}
+    <div class="events-list" id="events-container">
+        {{ range .Pages.ByParam "start_date" }}
+        {{ $startDate := .Params.start_date }}
+        {{ $endDate := .Params.end_date }}
+        {{ $startTime := .Params.start_time }}
+        {{ $endTime := .Params.end_time }}
+        {{ $eventTypes := .Params.event_types }}
+        {{ $ageGroups := .Params.age_groups }}
+        
+        <article class="event-card" 
+                 data-start-date="{{ $startDate }}"
+                 data-event-types="{{ delimit $eventTypes "," }}"
+                 data-age-groups="{{ delimit $ageGroups "," }}"
+                 data-search-text="{{ .Title | lower }} {{ .Params.description | lower }}">
+            
+            <div class="event-header">
+                <h2><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
+                
+                <div class="event-datetime">
+                    {{ if $startDate }}
+                    {{ $parsedStartDate := time $startDate }}
+                    {{ if and $endDate (ne $endDate $startDate) }}
+                        {{ $parsedEndDate := time $endDate }}
+                        <span class="event-date">
+                            <strong>{{ $parsedStartDate.Format "January 2, 2006" }}</strong>
+                            {{ if $startTime }}at {{ $startTime }}{{ end }}
+                            - 
+                            <strong>{{ $parsedEndDate.Format "January 2, 2006" }}</strong>
+                            {{ if $endTime }}at {{ $endTime }}{{ end }}
+                        </span>
+                    {{ else }}
+                        <span class="event-date">
+                            <strong>{{ $parsedStartDate.Format "January 2, 2006" }}</strong>
+                            {{ if $startTime }}
+                                {{ if $endTime }}
+                                    from {{ $startTime }} to {{ $endTime }}
+                                {{ else }}
+                                    at {{ $startTime }}
+                                {{ end }}
+                            {{ end }}
+                        </span>
+                    {{ end }}
+                    {{ end }}
+                </div>
+            </div>
+
+            <div class="event-details">
+                {{ if .Params.location }}
+                <div class="event-location">
+                    <strong>📍 Location:</strong> {{ .Params.location }}
+                </div>
+                {{ end }}
+
+                <div class="event-description">
+                    {{ if .Params.description }}
+                        {{ .Params.description }}
+                    {{ else if .Summary }}
+                        {{ .Summary }}
+                    {{ end }}
+                </div>
+
+                <!-- Event Type and Age Group Badges -->
+                <div class="event-taxonomies">
+                    {{ if $eventTypes }}
+                    <div class="event-types">
+                        {{ range $eventTypes }}
+                        <span class="event-type-badge">{{ . | title }}</span>
+                        {{ end }}
+                    </div>
+                    {{ end }}
+
+                    {{ if $ageGroups }}
+                    <div class="age-groups">
+                        {{ range $ageGroups }}
+                        <span class="age-group-badge">{{ . | title }}</span>
+                        {{ end }}
+                    </div>
+                    {{ end }}
+                </div>
+
+                {{ if .Params.registration_required }}
+                <div class="event-registration">
+                    <span class="registration-required">📝 Registration Required</span>
+                    {{ if .Params.registration_link }}
+                    <a href="{{ .Params.registration_link }}" class="btn btn-small">Register Now</a>
+                    {{ end }}
+                </div>
+                {{ end }}
+            </div>
+
+            <div class="event-actions">
+                <a href="{{ .Permalink }}" class="read-more">View Details →</a>
+            </div>
+        </article>
+        {{ end }}
+    </div>
+
+    <div id="no-events-message" class="no-events" style="display: none;">
+        <p>No events match your current filters.</p>
+        <button id="show-all-events" class="btn">Show All Events</button>
+    </div>
+
+    {{ else }}
+    <div class="no-events">
+        <h3>No events scheduled yet</h3>
+        <p>Check back soon for upcoming scout activities!</p>
+        <a href="/" class="btn">Return to Home</a>
+    </div>
+    {{ end }}
+</div>
+
+<!-- JavaScript for filtering functionality -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const dateFilter = document.getElementById('date-filter');
+    const typeFilter = document.getElementById('type-filter');
+    const ageFilter = document.getElementById('age-filter');
+    const searchFilter = document.getElementById('search-filter');
+    const clearFiltersBtn = document.getElementById('clear-filters');
+    const eventsContainer = document.getElementById('events-container');
+    const noEventsMessage = document.getElementById('no-events-message');
+    const showAllEventsBtn = document.getElementById('show-all-events');
+    
+    const eventCards = document.querySelectorAll('.event-card');
+    
+    function filterEvents() {
+        const dateValue = dateFilter.value;
+        const typeValue = typeFilter.value.toLowerCase();
+        const ageValue = ageFilter.value.toLowerCase();
+        const searchValue = searchFilter.value.toLowerCase().trim();
+        
+        const today = new Date();
+        const currentMonth = today.getMonth();
+        const currentYear = today.getFullYear();
+        const nextMonth = currentMonth === 11 ? 0 : currentMonth + 1;
+        const nextMonthYear = currentMonth === 11 ? currentYear + 1 : currentYear;
+        
+        let visibleCount = 0;
+        
+        eventCards.forEach(card => {
+            let showCard = true;
+            
+            // Date filtering
+            if (dateValue !== 'all') {
+                const startDateStr = card.dataset.startDate;
+                if (startDateStr) {
+                    const eventDate = new Date(startDateStr);
+                    
+                    switch(dateValue) {
+                        case 'upcoming':
+                            showCard = eventDate >= today;
+                            break;
+                        case 'this-month':
+                            showCard = eventDate.getMonth() === currentMonth && eventDate.getFullYear() === currentYear;
+                            break;
+                        case 'next-month':
+                            showCard = eventDate.getMonth() === nextMonth && eventDate.getFullYear() === nextMonthYear;
+                            break;
+                    }
+                }
+            }
+            
+            // Event type filtering
+            if (showCard && typeValue !== 'all') {
+                const eventTypes = card.dataset.eventTypes.toLowerCase();
+                showCard = eventTypes.includes(typeValue);
+            }
+            
+            // Age group filtering
+            if (showCard && ageValue !== 'all') {
+                const ageGroups = card.dataset.ageGroups.toLowerCase();
+                showCard = ageGroups.includes(ageValue);
+            }
+            
+            // Search filtering
+            if (showCard && searchValue) {
+                const searchText = card.dataset.searchText;
+                showCard = searchText.includes(searchValue);
+            }
+            
+            // Show/hide card
+            if (showCard) {
+                card.style.display = 'block';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+        
+        // Show/hide no events message
+        if (visibleCount === 0) {
+            eventsContainer.style.display = 'none';
+            noEventsMessage.style.display = 'block';
+        } else {
+            eventsContainer.style.display = 'block';
+            noEventsMessage.style.display = 'none';
+        }
+    }
+    
+    function clearAllFilters() {
+        dateFilter.value = 'all';
+        typeFilter.value = 'all';
+        ageFilter.value = 'all';
+        searchFilter.value = '';
+        filterEvents();
+    }
+    
+    // Event listeners
+    dateFilter.addEventListener('change', filterEvents);
+    typeFilter.addEventListener('change', filterEvents);
+    ageFilter.addEventListener('change', filterEvents);
+    searchFilter.addEventListener('input', filterEvents);
+    clearFiltersBtn.addEventListener('click', clearAllFilters);
+    showAllEventsBtn.addEventListener('click', clearAllFilters);
+    
+    // Initial filter application
+    filterEvents();
+});
+</script>
+{{ end }}

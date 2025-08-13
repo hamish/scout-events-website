@@ -1,0 +1,206 @@
+{{ define "main" }}
+<article class="event-detail">
+    <div class="event-detail-header">
+        <h1>{{ .Title }}</h1>
+        
+        <!-- Event Date and Time -->
+        {{ $startDate := .Params.start_date }}
+        {{ $endDate := .Params.end_date }}
+        {{ $startTime := .Params.start_time }}
+        {{ $endTime := .Params.end_time }}
+        
+        {{ if $startDate }}
+        <div class="event-datetime-detail">
+            {{ $parsedStartDate := time $startDate }}
+            {{ if and $endDate (ne $endDate $startDate) }}
+                {{ $parsedEndDate := time $endDate }}
+                <div class="event-date-range">
+                    <span class="start-date">
+                        <strong>{{ $parsedStartDate.Format "Monday, January 2, 2006" }}</strong>
+                        {{ if $startTime }}<span class="time">at {{ $startTime }}</span>{{ end }}
+                    </span>
+                    <span class="date-separator">to</span>
+                    <span class="end-date">
+                        <strong>{{ $parsedEndDate.Format "Monday, January 2, 2006" }}</strong>
+                        {{ if $endTime }}<span class="time">at {{ $endTime }}</span>{{ end }}
+                    </span>
+                </div>
+            {{ else }}
+                <div class="event-single-date">
+                    <span class="date">
+                        <strong>{{ $parsedStartDate.Format "Monday, January 2, 2006" }}</strong>
+                    </span>
+                    {{ if $startTime }}
+                        {{ if $endTime }}
+                            <span class="time-range">from {{ $startTime }} to {{ $endTime }}</span>
+                        {{ else }}
+                            <span class="time">at {{ $startTime }}</span>
+                        {{ end }}
+                    {{ end }}
+                </div>
+            {{ end }}
+        </div>
+        {{ end }}
+
+        <!-- Location -->
+        {{ if .Params.location }}
+        <div class="event-location-detail">
+            <span class="location-icon">📍</span>
+            <span class="location-text">{{ .Params.location }}</span>
+        </div>
+        {{ end }}
+
+        <!-- Event Type and Age Group Badges -->
+        <div class="event-meta-badges">
+            {{ if .Params.event_types }}
+            <div class="event-types-detail">
+                <span class="meta-label">Event Type:</span>
+                {{ range .Params.event_types }}
+                <span class="event-type-badge-detail">{{ . | title }}</span>
+                {{ end }}
+            </div>
+            {{ end }}
+
+            {{ if .Params.age_groups }}
+            <div class="age-groups-detail">
+                <span class="meta-label">Age Groups:</span>
+                {{ range .Params.age_groups }}
+                <span class="age-group-badge-detail">{{ . | title }}</span>
+                {{ end }}
+            </div>
+            {{ end }}
+        </div>
+
+        <!-- Registration Information -->
+        {{ if .Params.registration_required }}
+        <div class="registration-info">
+            <div class="registration-notice">
+                <span class="registration-icon">📝</span>
+                <span class="registration-text">Registration Required</span>
+            </div>
+            {{ if .Params.registration_link }}
+            <a href="{{ .Params.registration_link }}" class="btn registration-btn">Register Now</a>
+            {{ end }}
+        </div>
+        {{ end }}
+    </div>
+
+    <!-- Featured Image -->
+    {{ if .Params.featured_image }}
+    <div class="event-featured-image">
+        <img src="{{ .Params.featured_image | relURL }}" alt="{{ .Title }}" loading="lazy">
+    </div>
+    {{ end }}
+
+    <!-- Event Description -->
+    <div class="event-content">
+        {{ if .Params.description }}
+        <div class="event-description-detail">
+            <h2>About This Event</h2>
+            <p>{{ .Params.description }}</p>
+        </div>
+        {{ end }}
+
+        {{ if .Content }}
+        <div class="event-full-content">
+            {{ .Content }}
+        </div>
+        {{ end }}
+    </div>
+
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Event",
+        "name": "{{ .Title }}",
+        "description": "{{ if .Params.description }}{{ .Params.description }}{{ else }}{{ .Summary }}{{ end }}",
+        {{ if $startDate }}
+        "startDate": "{{ $startDate }}{{ if $startTime }}T{{ $startTime }}:00{{ end }}",
+        {{ if and $endDate (ne $endDate $startDate) }}
+        "endDate": "{{ $endDate }}{{ if $endTime }}T{{ $endTime }}:00{{ end }}",
+        {{ else if $endTime }}
+        "endDate": "{{ $startDate }}T{{ $endTime }}:00",
+        {{ end }}
+        {{ end }}
+        {{ if .Params.location }}
+        "location": {
+            "@type": "Place",
+            "name": "{{ .Params.location }}"
+        },
+        {{ end }}
+        "organizer": {
+            "@type": "Organization",
+            "name": "{{ .Site.Title }}",
+            "url": "{{ .Site.BaseURL }}"
+        },
+        "url": "{{ .Permalink }}",
+        {{ if .Params.featured_image }}
+        "image": "{{ .Params.featured_image | absURL }}",
+        {{ end }}
+        "eventStatus": "https://schema.org/EventScheduled",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode"
+    }
+    </script>
+</article>
+
+<!-- Navigation -->
+<nav class="event-navigation">
+    <div class="nav-links">
+        <a href="/events/" class="btn btn-secondary">← Back to Events</a>
+        
+        <!-- Previous/Next Event Navigation -->
+        {{ $events := where .Site.RegularPages "Section" "events" }}
+        {{ $events := $events.ByParam "start_date" }}
+        {{ $currentIndex := 0 }}
+        {{ range $index, $event := $events }}
+            {{ if eq $event.Permalink $.Permalink }}
+                {{ $currentIndex = $index }}
+            {{ end }}
+        {{ end }}
+        
+        {{ if gt $currentIndex 0 }}
+            {{ $prevEvent := index $events (sub $currentIndex 1) }}
+            <a href="{{ $prevEvent.Permalink }}" class="btn nav-prev" title="{{ $prevEvent.Title }}">← Previous Event</a>
+        {{ end }}
+        
+        {{ if lt $currentIndex (sub (len $events) 1) }}
+            {{ $nextEvent := index $events (add $currentIndex 1) }}
+            <a href="{{ $nextEvent.Permalink }}" class="btn nav-next" title="{{ $nextEvent.Title }}">Next Event →</a>
+        {{ end }}
+    </div>
+</nav>
+
+<!-- Related Events -->
+{{ $related := where .Site.RegularPages "Section" "events" }}
+{{ $related := where $related ".Permalink" "!=" .Permalink }}
+{{ if .Params.event_types }}
+    {{ $currentTypes := .Params.event_types }}
+    {{ $related = where $related ".Params.event_types" "intersect" $currentTypes }}
+{{ end }}
+{{ $related = $related.ByParam "start_date" | first 3 }}
+
+{{ if $related }}
+<section class="related-events">
+    <h2>Related Events</h2>
+    <div class="related-events-grid">
+        {{ range $related }}
+        <article class="related-event-card">
+            <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
+            {{ if .Params.start_date }}
+            {{ $relatedStartDate := time .Params.start_date }}
+            <div class="related-event-date">
+                {{ $relatedStartDate.Format "January 2, 2006" }}
+                {{ if .Params.start_time }}at {{ .Params.start_time }}{{ end }}
+            </div>
+            {{ end }}
+            {{ if .Params.location }}
+            <div class="related-event-location">📍 {{ .Params.location }}</div>
+            {{ end }}
+            <a href="{{ .Permalink }}" class="related-event-link">View Details →</a>
+        </article>
+        {{ end }}
+    </div>
+</section>
+{{ end }}
+{{ end }}

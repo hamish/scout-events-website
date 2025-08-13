@@ -1,0 +1,92 @@
+{{/* 
+Event Validation Partial
+This partial validates event frontmatter fields and provides error messages
+Usage: {{ partial "validate-event.html" . }}
+*/}}
+
+{{ $errors := slice }}
+
+{{/* Validate required fields */}}
+{{ if not .Params.title }}
+  {{ $errors = $errors | append "Title is required" }}
+{{ end }}
+
+{{ if not .Params.start_date }}
+  {{ $errors = $errors | append "Start date is required" }}
+{{ else }}
+  {{/* Validate start_date format */}}
+  {{ $startDate := time .Params.start_date }}
+  {{ if not $startDate }}
+    {{ $errors = $errors | append "Start date must be in YYYY-MM-DD format" }}
+  {{ end }}
+{{ end }}
+
+{{ if not .Params.start_time }}
+  {{ $errors = $errors | append "Start time is required" }}
+{{ else }}
+  {{/* Validate start_time format (basic check for HH:MM pattern) */}}
+  {{ if not (findRE "^([01]?[0-9]|2[0-3]):[0-5][0-9]$" .Params.start_time) }}
+    {{ $errors = $errors | append "Start time must be in HH:MM format (24-hour)" }}
+  {{ end }}
+{{ end }}
+
+{{ if not .Params.location }}
+  {{ $errors = $errors | append "Location is required" }}
+{{ end }}
+
+{{ if not .Params.description }}
+  {{ $errors = $errors | append "Description is required" }}
+{{ end }}
+
+{{/* Validate optional fields if provided */}}
+{{ if .Params.end_date }}
+  {{ $endDate := time .Params.end_date }}
+  {{ if not $endDate }}
+    {{ $errors = $errors | append "End date must be in YYYY-MM-DD format" }}
+  {{ else if .Params.start_date }}
+    {{ $startDate := time .Params.start_date }}
+    {{ if $startDate }}
+      {{ if $endDate.Before $startDate }}
+        {{ $errors = $errors | append "End date must be on or after start date" }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{ if .Params.end_time }}
+  {{ if not (findRE "^([01]?[0-9]|2[0-3]):[0-5][0-9]$" .Params.end_time) }}
+    {{ $errors = $errors | append "End time must be in HH:MM format (24-hour)" }}
+  {{ end }}
+{{ end }}
+
+{{ if .Params.event_type }}
+  {{ $validTypes := slice "meeting" "camping" "community_service" "fundraising" "social" "training" "competition" }}
+  {{ if not (in $validTypes .Params.event_type) }}
+    {{ $errors = $errors | append (printf "Event type must be one of: %s" (delimit $validTypes ", ")) }}
+  {{ end }}
+{{ end }}
+
+{{ if .Params.age_groups }}
+  {{ $validAgeGroups := slice "beavers" "cubs" "scouts" "venturers" "rovers" "all" }}
+  {{ range .Params.age_groups }}
+    {{ if not (in $validAgeGroups .) }}
+      {{ $errors = $errors | append (printf "Age group '%s' is not valid. Must be one of: %s" . (delimit $validAgeGroups ", ")) }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{/* Output validation results */}}
+{{ if $errors }}
+  <div class="validation-errors" style="background: #fee; border: 1px solid #fcc; padding: 1rem; margin: 1rem 0; border-radius: 4px;">
+    <h4 style="color: #c33; margin-top: 0;">Event Validation Errors:</h4>
+    <ul style="color: #c33; margin-bottom: 0;">
+      {{ range $errors }}
+        <li>{{ . }}</li>
+      {{ end }}
+    </ul>
+  </div>
+{{ end }}
+
+{{/* Store validation state for use in templates */}}
+{{ $.Scratch.Set "validation_errors" $errors }}
+{{ $.Scratch.Set "is_valid" (eq (len $errors) 0) }}

@@ -1,0 +1,53 @@
+{{ define "main" }}
+<div class="container">
+  <div class="taxonomy-header">
+    <h1>Browse Events by Type</h1>
+    <p class="taxonomy-description">
+      Find events that match your interests by browsing our different event categories.
+    </p>
+  </div>
+
+  <div class="taxonomy-terms-grid">
+    {{ range $name, $taxonomy := .Site.Taxonomies.event_types }}
+      <div class="taxonomy-term-card">
+        <h3>
+          <a href="{{ "/event_types/" | relURL }}{{ $name | urlize }}">
+            {{ $name | title }}
+          </a>
+        </h3>
+        <p class="term-description">
+          {{ if eq $name "meeting" }}
+            Regular scout meetings, planning sessions, and group gatherings.
+          {{ else if eq $name "camping" }}
+            Camping trips, outdoor adventures, and overnight activities.
+          {{ else if eq $name "community_service" }}
+            Community service projects and volunteer opportunities.
+          {{ else if eq $name "fundraising" }}
+            Fundraising events and activities to support the scout group.
+          {{ else if eq $name "social" }}
+            Social events, parties, and fun activities for scouts and families.
+          {{ else if eq $name "training" }}
+            Training sessions, skill development, and educational activities.
+          {{ else if eq $name "competition" }}
+            Competitions, contests, and competitive activities.
+          {{ else }}
+            Events categorized as {{ $name }}.
+          {{ end }}
+        </p>
+        <div class="term-meta">
+          <span class="event-count">{{ $taxonomy.Count }} event{{ if ne $taxonomy.Count 1 }}s{{ end }}</span>
+        </div>
+        <div class="term-actions">
+          <a href="{{ "/event_types/" | relURL }}{{ $name | urlize }}" class="view-events-btn">
+            View Events
+          </a>
+        </div>
+      </div>
+    {{ end }}
+  </div>
+
+  <div class="taxonomy-footer">
+    <a href="{{ "/events/" | relURL }}" class="back-link">← Back to All Events</a>
+  </div>
+</div>
+{{ end }}

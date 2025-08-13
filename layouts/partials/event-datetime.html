@@ -1,0 +1,40 @@
+{{/* 
+Event Date/Time Display Partial
+This partial handles the display logic for event dates and times according to requirements:
+- If no end_date is specified, assume end_date is same as start_date
+- If no end_time is specified, display only start_time
+Usage: {{ partial "event-datetime.html" . }}
+*/}}
+
+{{ $startDate := time .Params.start_date }}
+{{ $endDate := .Params.end_date | default .Params.start_date | time }}
+{{ $startTime := .Params.start_time }}
+{{ $endTime := .Params.end_time }}
+
+<div class="event-datetime">
+  {{ if $startDate }}
+    <div class="event-date">
+      <span class="date-label">Date:</span>
+      {{ if and $endDate (ne ($startDate.Format "2006-01-02") ($endDate.Format "2006-01-02")) }}
+        {{/* Multi-day event */}}
+        <time datetime="{{ $startDate.Format "2006-01-02" }}">{{ $startDate.Format "Monday, January 2, 2006" }}</time>
+        <span class="date-separator"> to </span>
+        <time datetime="{{ $endDate.Format "2006-01-02" }}">{{ $endDate.Format "Monday, January 2, 2006" }}</time>
+      {{ else }}
+        {{/* Single day event */}}
+        <time datetime="{{ $startDate.Format "2006-01-02" }}">{{ $startDate.Format "Monday, January 2, 2006" }}</time>
+      {{ end }}
+    </div>
+  {{ end }}
+
+  {{ if $startTime }}
+    <div class="event-time">
+      <span class="time-label">Time:</span>
+      <time datetime="{{ $startTime }}">{{ $startTime }}</time>
+      {{ if $endTime }}
+        <span class="time-separator"> to </span>
+        <time datetime="{{ $endTime }}">{{ $endTime }}</time>
+      {{ end }}
+    </div>
+  {{ end }}
+</div>
