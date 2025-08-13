@@ -1,6 +1,7 @@
 [build]
   # Hugo build command with optimization flags
-  command = "./scripts/build.sh"
+  # command = "./scripts/build.sh"
+  command = "hugo --gc --minify --cleanDestinationDir --enableGitInfo"
   
   # Directory to publish (Hugo's default output directory)
   publish = "public"
