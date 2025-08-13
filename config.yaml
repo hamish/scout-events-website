@@ -35,6 +35,9 @@ menu:
     - name: 'Events'
       url: '/events/'
       weight: 20
+    - name: 'Submit Event'
+      url: '/submit-event/'
+      weight: 25
     - name: 'About'
       url: '/pages/about/'
       weight: 30
