@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /netlify/
+Disallow: /.netlify/
+
+Sitemap: {{ .Site.BaseURL }}sitemap.xml
