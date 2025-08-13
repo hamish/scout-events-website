@@ -61,5 +61,3 @@ Have questions about submitting an event? [Contact our administrators](/contact/
 ## Submit Your Event
 
 Please fill out the form below with your event details. All fields marked with an asterisk (*) are required.
-
-{{ partial "submit-form.html" . }}
