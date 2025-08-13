@@ -54,13 +54,9 @@
       <div class="form-group">
         <label for="event_type">Event Type</label>
         <select id="event_type" name="event_type" multiple size="3">
-          <option value="meeting">Meeting</option>
-          <option value="camping">Camping</option>
-          <option value="community_service">Community Service</option>
-          <option value="fundraising">Fundraising</option>
-          <option value="social">Social Event</option>
-          <option value="training">Training</option>
-          <option value="competition">Competition</option>
+          {{ range $.Site.Data.site.event_config.event_types }}
+          <option value="{{ .value }}">{{ .label }}</option>
+          {{ end }}
         </select>
         <div class="form-help">Hold Ctrl/Cmd to select multiple types</div>
         <div class="form-error" id="event_type-error"></div>
@@ -69,12 +65,9 @@
       <div class="form-group">
         <label for="age_groups">Age Groups</label>
         <select id="age_groups" name="age_groups" multiple size="4">
-          <option value="all" selected>All Age Groups</option>
-          <option value="beavers">Beavers</option>
-          <option value="cubs">Cubs</option>
-          <option value="scouts">Scouts</option>
-          <option value="venturers">Venturers</option>
-          <option value="rovers">Rovers</option>
+          {{ range $.Site.Data.site.event_config.age_groups }}
+          <option value="{{ .value }}" {{ if eq .value "all" }}selected{{ end }}>{{ .label }}</option>
+          {{ end }}
         </select>
         <div class="form-help">Hold Ctrl/Cmd to select multiple age groups</div>
         <div class="form-error" id="age_groups-error"></div>

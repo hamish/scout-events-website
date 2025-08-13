@@ -65,13 +65,13 @@ collections:
         name: "event_type"
         widget: "select"
         required: true
-        hint: "Select the category that best describes this event"
+        hint: "Select the category that best describes this event. To modify available options, edit Site Configuration → Event Configuration."
         options:
           - {label: "Meeting", value: "meeting"}
           - {label: "Camping", value: "camping"}
           - {label: "Community Service", value: "community_service"}
           - {label: "Fundraising", value: "fundraising"}
-          - {label: "Social", value: "social"}
+          - {label: "Social Event", value: "social"}
           - {label: "Training", value: "training"}
           - {label: "Competition", value: "competition"}
       - label: "Age Groups"
@@ -80,7 +80,7 @@ collections:
         required: true
         multiple: true
         min: 1
-        hint: "Select all age groups that can participate in this event"
+        hint: "Select all age groups that can participate in this event. To modify available options, edit Site Configuration → Event Configuration."
         options:
           - {label: "Beavers (5-7 years)", value: "beavers"}
           - {label: "Cubs (8-10 years)", value: "cubs"}
@@ -257,6 +257,60 @@ collections:
                 widget: "string"
                 required: false
                 hint: "Name or description of where your group meets (e.g., 'Scout Hall', 'Community Center')"
+          - label: "Event Configuration"
+            name: "event_config"
+            widget: "object"
+            required: false
+            collapsed: false
+            hint: "Configure available event types and age groups for your site"
+            fields:
+              - label: "Event Types"
+                name: "event_types"
+                widget: "list"
+                required: true
+                hint: "Define the types of events that can be selected when creating events"
+                fields:
+                  - label: "Label"
+                    name: "label"
+                    widget: "string"
+                    required: true
+                    hint: "Display name for this event type (e.g., 'Meeting')"
+                  - label: "Value"
+                    name: "value" 
+                    widget: "string"
+                    required: true
+                    hint: "Internal value for this event type (e.g., 'meeting'). Use lowercase with underscores."
+                default:
+                  - {label: "Meeting", value: "meeting"}
+                  - {label: "Camping", value: "camping"}
+                  - {label: "Community Service", value: "community_service"}
+                  - {label: "Fundraising", value: "fundraising"}
+                  - {label: "Social Event", value: "social"}
+                  - {label: "Training", value: "training"}
+                  - {label: "Competition", value: "competition"}
+              - label: "Age Groups"
+                name: "age_groups"
+                widget: "list"
+                required: true
+                hint: "Define the age groups that can be selected for events"
+                fields:
+                  - label: "Label"
+                    name: "label"
+                    widget: "string"
+                    required: true
+                    hint: "Display name for this age group (e.g., 'Cubs (8-10 years)')"
+                  - label: "Value"
+                    name: "value"
+                    widget: "string"
+                    required: true
+                    hint: "Internal value for this age group (e.g., 'cubs'). Use lowercase."
+                default:
+                  - {label: "Beavers (5-7 years)", value: "beavers"}
+                  - {label: "Cubs (8-10 years)", value: "cubs"}
+                  - {label: "Scouts (11-14 years)", value: "scouts"}
+                  - {label: "Venturers (15-17 years)", value: "venturers"}
+                  - {label: "Rovers (18-25 years)", value: "rovers"}
+                  - {label: "All Ages", value: "all"}
 
 # Editorial workflow for content review (optional)
 publish_mode: editorial_workflow

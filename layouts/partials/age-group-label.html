@@ -1,0 +1,7 @@
+{{- $ageGroup := .ageGroup -}}
+{{- range $.Site.Data.site.event_config.age_groups -}}
+  {{- if eq .value $ageGroup -}}
+    {{- .label -}}
+    {{- break -}}
+  {{- end -}}
+{{- end -}}
