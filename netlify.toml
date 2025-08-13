@@ -1,6 +1,6 @@
 [build]
   # Hugo build command with optimization flags
-  command = "./scripts/build.sh"
+  command = "hugo --gc --minify --cleanDestinationDir --enableGitInfo"
   
   # Directory to publish (Hugo's default output directory)
   publish = "public"
@@ -10,7 +10,7 @@
   
   # Hugo version to use
   [build.environment]
-    HUGO_VERSION = "0.145.0"
+    HUGO_VERSION = "0.131.0"
     NODE_VERSION = "20"
     # Production environment variables
     HUGO_ENV = "production"
