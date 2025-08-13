@@ -124,17 +124,52 @@ collections:
   # Pages collection for static content
   - name: "pages"
     label: "Pages"
-    folder: "content"
+    folder: "content/pages"
     create: true
     slug: "{{slug}}"
-    filter: {field: "type", value: "page"}
+    editor:
+      preview: true
     fields:
-      - {label: "Title", name: "title", widget: "string", required: true}
-      - {label: "Type", name: "type", widget: "hidden", default: "page"}
-      - {label: "Menu Order", name: "menu_order", widget: "number", required: false, hint: "Order in navigation menu (lower numbers appear first)"}
-      - {label: "Content", name: "body", widget: "markdown", required: true}
-      - {label: "Featured Image", name: "featured_image", widget: "image", required: false}
-      - {label: "Draft", name: "draft", widget: "boolean", default: false, required: false}
+      - label: "Title"
+        name: "title"
+        widget: "string"
+        required: true
+        hint: "Enter the page title that will appear in navigation and as the main heading"
+      - label: "Type"
+        name: "type"
+        widget: "hidden"
+        default: "page"
+      - label: "Description"
+        name: "description"
+        widget: "text"
+        required: false
+        hint: "Brief description for SEO and page summary (optional)"
+      - label: "Menu Order"
+        name: "menu_order"
+        widget: "number"
+        required: false
+        default: 10
+        hint: "Order in navigation menu (lower numbers appear first). Default is 10."
+      - label: "Featured Image"
+        name: "featured_image"
+        widget: "image"
+        required: false
+        hint: "Upload an image to display at the top of the page (optional)"
+        media_library:
+          config:
+            max_file_size: 2048000 # 2MB limit
+      - label: "Content"
+        name: "body"
+        widget: "markdown"
+        required: true
+        hint: "Page content using markdown formatting. You can add headings, lists, links, images, and more."
+        buttons: ["bold", "italic", "code", "link", "heading-two", "heading-three", "heading-four", "quote", "bulleted-list", "numbered-list"]
+      - label: "Draft"
+        name: "draft"
+        widget: "boolean"
+        default: false
+        required: false
+        hint: "Keep this page as a draft (not published) until you're ready to make it live"
 
   # Site configuration
   - name: "config"
@@ -144,27 +179,84 @@ collections:
         name: "site"
         file: "data/site.yml"
         fields:
-          - {label: "Site Title", name: "title", widget: "string", required: true}
-          - {label: "Site Description", name: "description", widget: "text", required: true}
-          - {label: "Contact Email", name: "contact_email", widget: "string", required: true}
-          - {label: "Phone Number", name: "phone", widget: "string", required: false}
-          - {label: "Address", name: "address", widget: "text", required: false}
+          - label: "Site Title"
+            name: "title"
+            widget: "string"
+            required: true
+            hint: "The main title of your website that appears in the browser tab and header"
+          - label: "Site Description"
+            name: "description"
+            widget: "text"
+            required: true
+            hint: "A brief description of your scout group and website for search engines and social media"
+          - label: "Contact Email"
+            name: "contact_email"
+            widget: "string"
+            required: true
+            pattern: ["^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", "Please enter a valid email address"]
+            hint: "Main contact email address for your scout group"
+          - label: "Phone Number"
+            name: "phone"
+            widget: "string"
+            required: false
+            hint: "Contact phone number (optional)"
+          - label: "Address"
+            name: "address"
+            widget: "text"
+            required: false
+            hint: "Physical address of your scout hall or meeting location (optional)"
           - label: "Social Media"
             name: "social_media"
             widget: "object"
             required: false
+            collapsed: false
+            hint: "Links to your social media profiles (all optional)"
             fields:
-              - {label: "Facebook", name: "facebook", widget: "string", required: false}
-              - {label: "Instagram", name: "instagram", widget: "string", required: false}
-              - {label: "Twitter", name: "twitter", widget: "string", required: false}
+              - label: "Facebook URL"
+                name: "facebook"
+                widget: "string"
+                required: false
+                pattern: ["^https?://.*", "Please enter a valid URL starting with http:// or https://"]
+                hint: "Full URL to your Facebook page"
+              - label: "Instagram URL"
+                name: "instagram"
+                widget: "string"
+                required: false
+                pattern: ["^https?://.*", "Please enter a valid URL starting with http:// or https://"]
+                hint: "Full URL to your Instagram profile"
+              - label: "Twitter URL"
+                name: "twitter"
+                widget: "string"
+                required: false
+                pattern: ["^https?://.*", "Please enter a valid URL starting with http:// or https://"]
+                hint: "Full URL to your Twitter profile"
           - label: "Group Information"
             name: "group_info"
             widget: "object"
             required: false
+            collapsed: false
+            hint: "Information about your scout group"
             fields:
-              - {label: "Group Name", name: "group_name", widget: "string", required: false}
-              - {label: "Meeting Times", name: "meeting_times", widget: "string", required: false}
-              - {label: "Age Ranges", name: "age_ranges", widget: "string", required: false}
+              - label: "Group Name"
+                name: "group_name"
+                widget: "string"
+                required: true
+                hint: "Official name of your scout group"
+              - label: "Meeting Times"
+                name: "meeting_times"
+                widget: "string"
+                required: false
+                hint: "When and how often your group meets (e.g., 'Fridays 7:00 PM - 9:00 PM')"
+              - label: "Age Ranges"
+                name: "age_ranges"
+                widget: "string"
+                required: false
+                hint: "Age ranges your group serves (e.g., 'Ages 5-25')"
+              - label: "Meeting Location"
+                name: "meeting_location"
+                widget: "string"
+                required: false
+                hint: "Name or description of where your group meets (e.g., 'Scout Hall', 'Community Center')"
 
 # Editorial workflow for content review (optional)
 publish_mode: editorial_workflow

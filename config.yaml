@@ -36,8 +36,11 @@ menu:
       url: '/events/'
       weight: 20
     - name: 'About'
-      url: '/about/'
+      url: '/pages/about/'
       weight: 30
+    - name: 'Group Info'
+      url: '/pages/group-info/'
+      weight: 35
     - name: 'Contact'
       url: '/contact/'
       weight: 40
@@ -70,4 +73,4 @@ outputs:
 # Permalinks
 permalinks:
   events: '/events/:year/:month/:slug/'
-  pages: '/:slug/'
+  pages: '/pages/:slug/'

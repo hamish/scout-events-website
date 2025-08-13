@@ -1,0 +1,60 @@
+{{/* 
+  Site Information Partial
+  Usage: {{ partial "site-info.html" (dict "context" . "type" "contact") }}
+  Types: "contact", "group", "social", "all"
+*/}}
+
+{{ $context := .context }}
+{{ $type := .type | default "all" }}
+{{ $siteData := $context.Site.Data.site }}
+
+{{ if or (eq $type "contact") (eq $type "all") }}
+<div class="site-contact-info">
+    {{ if $siteData.contact_email }}
+    <p><strong>Email:</strong> <a href="mailto:{{ $siteData.contact_email }}">{{ $siteData.contact_email }}</a></p>
+    {{ end }}
+    {{ if $siteData.phone }}
+    <p><strong>Phone:</strong> {{ $siteData.phone }}</p>
+    {{ end }}
+    {{ if $siteData.address }}
+    <p><strong>Address:</strong> {{ $siteData.address }}</p>
+    {{ end }}
+</div>
+{{ end }}
+
+{{ if or (eq $type "group") (eq $type "all") }}
+<div class="site-group-info">
+    {{ if $siteData.group_info.group_name }}
+    <p><strong>Group:</strong> {{ $siteData.group_info.group_name }}</p>
+    {{ end }}
+    {{ if $siteData.group_info.meeting_times }}
+    <p><strong>Meeting Times:</strong> {{ $siteData.group_info.meeting_times }}</p>
+    {{ end }}
+    {{ if $siteData.group_info.meeting_location }}
+    <p><strong>Location:</strong> {{ $siteData.group_info.meeting_location }}</p>
+    {{ end }}
+    {{ if $siteData.group_info.age_ranges }}
+    <p><strong>Age Ranges:</strong> {{ $siteData.group_info.age_ranges }}</p>
+    {{ end }}
+</div>
+{{ end }}
+
+{{ if or (eq $type "social") (eq $type "all") }}
+{{ $socialMedia := $siteData.social_media }}
+{{ if or $socialMedia.facebook $socialMedia.instagram $socialMedia.twitter }}
+<div class="site-social-info">
+    <p><strong>Follow Us:</strong></p>
+    <ul class="social-links">
+        {{ if $socialMedia.facebook }}
+        <li><a href="{{ $socialMedia.facebook }}" target="_blank" rel="noopener">Facebook</a></li>
+        {{ end }}
+        {{ if $socialMedia.instagram }}
+        <li><a href="{{ $socialMedia.instagram }}" target="_blank" rel="noopener">Instagram</a></li>
+        {{ end }}
+        {{ if $socialMedia.twitter }}
+        <li><a href="{{ $socialMedia.twitter }}" target="_blank" rel="noopener">Twitter</a></li>
+        {{ end }}
+    </ul>
+</div>
+{{ end }}
+{{ end }}

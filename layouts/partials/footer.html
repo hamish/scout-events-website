@@ -2,18 +2,25 @@
     <div class="container">
         <div class="footer-content">
             <div class="footer-section">
-                <h3>{{ .Site.Params.group_name }}</h3>
-                <p>{{ .Site.Params.description }}</p>
-                <p><strong>Meeting Times:</strong> {{ .Site.Params.meeting_times }}</p>
-                <p><strong>Age Ranges:</strong> {{ .Site.Params.age_ranges }}</p>
+                <h3>{{ .Site.Data.site.group_info.group_name | default .Site.Params.group_name }}</h3>
+                <p>{{ .Site.Data.site.description | default .Site.Params.description }}</p>
+                <p><strong>Meeting Times:</strong> {{ .Site.Data.site.group_info.meeting_times | default .Site.Params.meeting_times }}</p>
+                {{ if or .Site.Data.site.group_info.meeting_location .Site.Params.meeting_location }}
+                <p><strong>Location:</strong> {{ .Site.Data.site.group_info.meeting_location | default .Site.Params.meeting_location }}</p>
+                {{ end }}
+                <p><strong>Age Ranges:</strong> {{ .Site.Data.site.group_info.age_ranges | default .Site.Params.age_ranges }}</p>
             </div>
             
             <div class="footer-section">
                 <h3>Contact Information</h3>
                 <ul>
-                    <li><strong>Email:</strong> <a href="mailto:{{ .Site.Params.contact_email }}">{{ .Site.Params.contact_email }}</a></li>
-                    <li><strong>Phone:</strong> {{ .Site.Params.phone }}</li>
-                    <li><strong>Address:</strong> {{ .Site.Params.address }}</li>
+                    <li><strong>Email:</strong> <a href="mailto:{{ .Site.Data.site.contact_email | default .Site.Params.contact_email }}">{{ .Site.Data.site.contact_email | default .Site.Params.contact_email }}</a></li>
+                    {{ if or .Site.Data.site.phone .Site.Params.phone }}
+                    <li><strong>Phone:</strong> {{ .Site.Data.site.phone | default .Site.Params.phone }}</li>
+                    {{ end }}
+                    {{ if or .Site.Data.site.address .Site.Params.address }}
+                    <li><strong>Address:</strong> {{ .Site.Data.site.address | default .Site.Params.address }}</li>
+                    {{ end }}
                 </ul>
             </div>
             
@@ -24,17 +31,18 @@
                     <li><a href="{{ .URL | relURL }}">{{ .Name }}</a></li>
                     {{ end }}
                 </ul>
-                {{ if or .Site.Params.social_media.facebook .Site.Params.social_media.instagram .Site.Params.social_media.twitter }}
+                {{ $socialMedia := .Site.Data.site.social_media | default .Site.Params.social_media }}
+                {{ if or $socialMedia.facebook $socialMedia.instagram $socialMedia.twitter }}
                 <h3>Follow Us</h3>
                 <ul>
-                    {{ if .Site.Params.social_media.facebook }}
-                    <li><a href="{{ .Site.Params.social_media.facebook }}" target="_blank" rel="noopener">Facebook</a></li>
+                    {{ if $socialMedia.facebook }}
+                    <li><a href="{{ $socialMedia.facebook }}" target="_blank" rel="noopener">Facebook</a></li>
                     {{ end }}
-                    {{ if .Site.Params.social_media.instagram }}
-                    <li><a href="{{ .Site.Params.social_media.instagram }}" target="_blank" rel="noopener">Instagram</a></li>
+                    {{ if $socialMedia.instagram }}
+                    <li><a href="{{ $socialMedia.instagram }}" target="_blank" rel="noopener">Instagram</a></li>
                     {{ end }}
-                    {{ if .Site.Params.social_media.twitter }}
-                    <li><a href="{{ .Site.Params.social_media.twitter }}" target="_blank" rel="noopener">Twitter</a></li>
+                    {{ if $socialMedia.twitter }}
+                    <li><a href="{{ $socialMedia.twitter }}" target="_blank" rel="noopener">Twitter</a></li>
                     {{ end }}
                 </ul>
                 {{ end }}
@@ -42,7 +50,7 @@
         </div>
         
         <div class="footer-bottom">
-            <p>&copy; {{ now.Year }} {{ .Site.Params.group_name }}. All rights reserved.</p>
+            <p>&copy; {{ now.Year }} {{ .Site.Data.site.group_info.group_name | default .Site.Params.group_name }}. All rights reserved.</p>
         </div>
     </div>
 </footer>

@@ -1,7 +1,7 @@
 <header class="site-header">
     <div class="container">
         <h1>
-            <a href="{{ "/" | relURL }}">{{ .Site.Title }}</a>
+            <a href="{{ "/" | relURL }}">{{ .Site.Data.site.title | default .Site.Title }}</a>
         </h1>
         <nav class="main-nav">
             <button class="mobile-menu-toggle" aria-label="Toggle mobile menu" aria-expanded="false">
