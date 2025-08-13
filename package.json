@@ -1,0 +1,22 @@
+{
+  "name": "scout-events-website",
+  "version": "1.0.0",
+  "description": "A community website for scout events and activities",
+  "dependencies": {
+    "@octokit/rest": "^19.0.7"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "build": "hugo --gc --minify --cleanDestinationDir --enableGitInfo",
+    "dev": "hugo server -D --bind 0.0.0.0",
+    "clean": "rm -rf public resources"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hamish/scout-events-website.git"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
