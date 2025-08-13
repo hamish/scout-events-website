@@ -24,6 +24,14 @@ This page confirms that the Netlify deployment pipeline is working correctly.
 
 If you can see this page, the deployment pipeline is working successfully!
 
+## Continuous Deployment Test
+
+✅ **VERIFIED**: Automatic deployment from GitHub to Netlify is working correctly!
+
+- Last updated: {{ now.Format "January 2, 2006 at 3:04 PM" }}
+- Build triggered automatically on git push
+- Site updates within 1-2 minutes of code changes
+
 ---
 
 *This test page can be removed after confirming deployment works.*
