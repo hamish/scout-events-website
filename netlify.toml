@@ -45,6 +45,14 @@
     name = "contact"
     action = "/contact/success/"
     error = "/contact/error/"
+
+[functions]
+  included_files = ["node_modules/**"]
+
+[functions."submit-event"]
+  # Trigger this function on form submission
+  # The form name must match the `name` attribute of the form
+  form = "submit-event"
     
 # Branch deploy settings with optimization
 [context.production]

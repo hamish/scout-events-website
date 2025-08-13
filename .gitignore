@@ -32,3 +32,6 @@ node_modules/
 .env
 .env.local
 .env.production
+
+# Scratch files
+scratch.txt
